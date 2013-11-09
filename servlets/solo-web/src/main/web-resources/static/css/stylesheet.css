@@ -1,0 +1,90 @@
+@charset "utf-8";
+
+/* ==================== 全体レイアウト ==================== */
+
+body {
+	margin: 10px;
+	padding: 10px;
+	line-height: 1.4;
+	background-color: #F8F8FF;
+	font-size: 0.8em;
+}
+
+body,input {
+	color: #2F4F4F;
+	font-family: "メイリオ", "ＭＳ ゴシック";
+}
+
+/* ==================== メインボタン ==================== */
+
+div.mainbtn {
+	margin-top: 10px;
+	text-align: left;
+}
+
+/* ==================== テーブル（フラットレイアウト） ==================== */
+
+div.table-flat table {
+	border-collapse: collapse;
+	font-size: 1.0em;
+}
+
+div.table-flat th {
+	border: solid 1px #696969;
+	background-color: #B0C4DE;
+	padding: 4pt 8pt;
+	font-size: 1.0em;
+}
+
+div.table-flat td {
+	border: solid 1px #696969;
+	background-color: #E6E6FA;
+	padding: 4pt 8pt;
+	font-size: 1.0em;
+}
+
+/* ==================== テーブル（ボーダー・背景なし） ==================== */
+
+div.table-none table {
+	border: none;
+	font-size: 1.0em;
+}
+
+div.table-none th {
+	border: none;
+	padding: 4pt 8pt;
+	font-size: 1.0em;
+}
+
+div.table-none td {
+	border: none;
+	padding: 4pt 8pt;
+	font-size: 1.0em;
+}
+
+div.table-none td.right {
+	text-align: right
+}
+
+/* ==================== メッセージエリア ==================== */
+
+/* メッセージエリア */
+.message-area {
+	padding: 0.5em 0;
+}
+
+.message-area ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+/* エラーメッセージ */
+.error {
+	color: #FF0000;
+}
+
+/* インフォメーションメッセージ */
+.information {
+	color: #0000FF;
+}

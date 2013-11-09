@@ -15,6 +15,7 @@
 
     <modules>
         <module>solo-core</module>
+        <module>solo-support</module>
         <module>solo-data</module>
         <module>solo-service</module>
         <module>solo-web-controller</module>
