@@ -1,4 +1,4 @@
-package jp.gr.java_conf.star_diopside.solo.web.mvc.form.auth;
+package jp.gr.java_conf.star_diopside.solo.web.mvc.auth.form;
 
 import java.io.Serializable;
 

@@ -11,16 +11,22 @@
 <h1>ユーザログイン</h1>
 <spring:url var="mainFormUrl" value="/auth/AA01S010" />
 <form:form action="${mainFormUrl}" modelAttribute="AA01S010Form">
-<form:errors path="*" element="div" cssClass="message-area error" />
+<form:errors element="div" cssClass="message-area error" />
 <div class="table-none">
 <table>
 	<tr>
 		<td class="right">ユーザ名</td>
-		<td><form:input path="username" /></td>
+		<td>
+			<form:input path="username" />
+			<form:errors path="username" element="div" cssClass="message-area error" />
+		</td>
 	</tr>
 	<tr>
 		<td class="right">パスワード</td>
-		<td><form:password path="password" autocomplete="off" /></td>
+		<td>
+			<form:password path="password" autocomplete="off" />
+			<form:errors path="password" element="div" cssClass="message-area error" />
+		</td>
 	</tr>
 </table>
 </div>
@@ -28,7 +34,7 @@
 	<input type="submit" name="login" value="ログイン" />
 </p>
 <p>
-	<input type="submit" name="register" value="ユーザを新規登録する場合はこちら" />
+	<a href="<spring:url value='/auth/AA02S010' />">ユーザを新規登録する場合はこちら</a>
 </p>
 </form:form>
 </body>

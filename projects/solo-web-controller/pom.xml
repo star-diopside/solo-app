@@ -40,6 +40,10 @@
             <artifactId>spring-security-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.google.code</groupId>
+            <artifactId>kaptcha</artifactId>
+        </dependency>
+        <dependency>
             <groupId>jp.gr.java_conf.star_diopside.solo</groupId>
             <artifactId>solo-test-support</artifactId>
             <scope>test</scope>

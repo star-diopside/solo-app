@@ -1,9 +1,9 @@
-package jp.gr.java_conf.star_diopside.solo.web.mvc.controller.auth;
+package jp.gr.java_conf.star_diopside.solo.web.mvc.auth.controller;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import jp.gr.java_conf.star_diopside.solo.web.mvc.form.auth.AA01S010Form;
+import jp.gr.java_conf.star_diopside.solo.web.mvc.auth.form.AA01S010Form;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,16 +74,5 @@ public class AA01S010Controller {
         } else {
             return "forward:/j_spring_security_check";
         }
-    }
-
-    /**
-     * ユーザ登録処理を行う。
-     * 
-     * @param form フォーム情報
-     * @return 処理結果
-     */
-    @RequestMapping(method = RequestMethod.POST, params = "register")
-    public String register(AA01S010Form form) {
-        return "redirect:/auth/AA02S010";
     }
 }

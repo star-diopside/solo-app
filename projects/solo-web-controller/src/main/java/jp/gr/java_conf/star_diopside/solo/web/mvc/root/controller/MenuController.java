@@ -1,4 +1,4 @@
-package jp.gr.java_conf.star_diopside.solo.web.mvc.controller;
+package jp.gr.java_conf.star_diopside.solo.web.mvc.root.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

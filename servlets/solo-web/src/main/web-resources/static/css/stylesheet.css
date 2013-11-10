@@ -34,6 +34,7 @@ div.table-flat th {
 	background-color: #B0C4DE;
 	padding: 4pt 8pt;
 	font-size: 1.0em;
+	vertical-align: baseline;
 }
 
 div.table-flat td {
@@ -41,6 +42,7 @@ div.table-flat td {
 	background-color: #E6E6FA;
 	padding: 4pt 8pt;
 	font-size: 1.0em;
+	vertical-align: baseline;
 }
 
 /* ==================== テーブル（ボーダー・背景なし） ==================== */
@@ -54,12 +56,14 @@ div.table-none th {
 	border: none;
 	padding: 4pt 8pt;
 	font-size: 1.0em;
+	vertical-align: baseline;
 }
 
 div.table-none td {
 	border: none;
 	padding: 4pt 8pt;
 	font-size: 1.0em;
+	vertical-align: baseline;
 }
 
 div.table-none td.right {
