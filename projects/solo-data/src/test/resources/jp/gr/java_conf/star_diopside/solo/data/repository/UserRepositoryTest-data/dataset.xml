@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <users
+        username="user01"
+        password="3431f32838e009b9227512da0ab7f3cac5f49e8c1587e286281b7e4f66d032a68ff2c0efce55eda7"
+        enabled="true"
+    />
+
+    <users
+        username="user02"
+        password="3431f32838e009b9227512da0ab7f3cac5f49e8c1587e286281b7e4f66d032a68ff2c0efce55eda7"
+        enabled="true"
+    />
+
+    <users
+        username="user03"
+        password="3431f32838e009b9227512da0ab7f3cac5f49e8c1587e286281b7e4f66d032a68ff2c0efce55eda7"
+        enabled="true"
+    />
+
+    <users
+        username="user04"
+        password="3431f32838e009b9227512da0ab7f3cac5f49e8c1587e286281b7e4f66d032a68ff2c0efce55eda7"
+        enabled="false"
+    />
+
+    <authorities
+        username="user02"
+        authority="ROLE_USER"
+    />
+
+    <authorities
+        username="user03"
+        authority="ROLE_USER"
+    />
+
+    <authorities
+        username="user03"
+        authority="ROLE_ADMIN"
+    />
+
+    <authorities
+        username="user04"
+        authority="ROLE_USER"
+    />
+
+</dataset>
