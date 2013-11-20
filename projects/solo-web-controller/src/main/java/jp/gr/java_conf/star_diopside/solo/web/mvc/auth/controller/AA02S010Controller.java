@@ -4,7 +4,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import jp.gr.java_conf.star_diopside.solo.core.exception.BusinessException;
-import jp.gr.java_conf.star_diopside.solo.service.logic.UserService;
+import jp.gr.java_conf.star_diopside.solo.service.logic.auth.UserManager;
 import jp.gr.java_conf.star_diopside.solo.support.util.ExceptionUtils;
 import jp.gr.java_conf.star_diopside.solo.web.mvc.auth.form.AA01S010Form;
 import jp.gr.java_conf.star_diopside.solo.web.mvc.auth.form.AA02S010Form;
@@ -27,7 +27,7 @@ import com.google.code.kaptcha.Constants;
 public class AA02S010Controller {
 
     @Autowired
-    private UserService userService;
+    private UserManager userManager;
 
     /**
      * 画面表示処理を行う。
@@ -82,7 +82,7 @@ public class AA02S010Controller {
 
         // ユーザ登録を行う。
         try {
-            userService.createUser(form.getUsername(), form.getNickname(), form.getPassword());
+            userManager.createUser(form.getUsername(), form.getNickname(), form.getPassword());
         } catch (BusinessException e) {
             ExceptionUtils.reject(errors, e);
             return "auth/AA02S010";

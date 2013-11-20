@@ -1,5 +1,4 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
@@ -12,7 +11,6 @@
 <h1>ユーザ新規登録</h1>
 <spring:url var="mainFormUrl" value="/auth/AA02S010" />
 <form:form action="${mainFormUrl}" modelAttribute="AA02S010Form">
-<c:out value="${errors}" />
 <form:errors element="div" cssClass="message-area error" />
 <div class="table-none">
 <table>

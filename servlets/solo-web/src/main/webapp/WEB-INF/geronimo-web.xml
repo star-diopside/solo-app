@@ -10,7 +10,7 @@
         <dependencies>
             <dependency>
                 <groupId>console.dbpool</groupId>
-                <artifactId>jdbc_application</artifactId>
+                <artifactId>jdbc_management</artifactId>
             </dependency>
         </dependencies>
         <hidden-classes>
@@ -23,6 +23,6 @@
     <context-root>/solo-web</context-root>
     <resource-ref xmlns="http://geronimo.apache.org/xml/ns/naming-1.2">
         <ref-name>jdbc/dataSource</ref-name>
-        <resource-link>jdbc/application</resource-link>
+        <resource-link>jdbc/management</resource-link>
     </resource-ref>
 </web-app>

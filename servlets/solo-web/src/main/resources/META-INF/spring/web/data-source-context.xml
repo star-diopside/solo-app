@@ -11,10 +11,15 @@
     <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/dataSource" />
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="application" />
         <property name="jtaDataSource" ref="dataSource" />
+        <property name="persistenceProviderClass" value="org.apache.openjpa.persistence.PersistenceProviderImpl" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter" />
+        </property>
     </bean>
 
     <tx:jta-transaction-manager />
+
+    <tx:annotation-driven />
 
 </beans>

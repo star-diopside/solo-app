@@ -12,28 +12,28 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @SuppressWarnings("serial")
 public class AuthorityPk implements Serializable {
 
-    /** ユーザ名 */
-    private String username;
+    /** ユーザID */
+    private String userId;
 
     /** 権限 */
     private String authority;
 
     /**
-     * ユーザ名を取得する。
+     * ユーザIDを取得する。
      * 
-     * @return ユーザ名
+     * @return ユーザID
      */
-    public String getUsername() {
-        return username;
+    public String getUserId() {
+        return userId;
     }
 
     /**
-     * ユーザ名を設定する。
+     * ユーザIDを設定する。
      * 
-     * @param username ユーザ名
+     * @param userId ユーザID
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     /**

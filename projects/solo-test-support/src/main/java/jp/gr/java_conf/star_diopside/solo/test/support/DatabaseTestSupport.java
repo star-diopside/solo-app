@@ -9,6 +9,7 @@ import jp.gr.java_conf.star_diopside.solo.test.util.TestUtils;
 
 import org.dbunit.DataSourceDatabaseTester;
 import org.dbunit.IDatabaseTester;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -87,6 +88,20 @@ public class DatabaseTestSupport {
 
         try {
             databaseTester.onTearDown();
+        } catch (Exception e) {
+            throw new TestException(e);
+        }
+    }
+
+    /**
+     * データベースコネクションを取得する。
+     * 
+     * @return データベースコネクション
+     */
+    public IDatabaseConnection getConnection() {
+
+        try {
+            return databaseTester.getConnection();
         } catch (Exception e) {
             throw new TestException(e);
         }
