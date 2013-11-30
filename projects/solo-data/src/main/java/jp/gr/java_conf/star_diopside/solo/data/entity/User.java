@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -75,7 +76,37 @@ public class User implements Serializable {
     private String updatedUserId;
 
     /** バージョン */
+    @Version
     private Integer version;
+
+    /**
+     * デフォルトコンストラクタ
+     */
+    public User() {
+    }
+
+    /**
+     * コピーコンストラクタ
+     * 
+     * @param user コピー元インスタンス
+     */
+    public User(User user) {
+        this.userId = user.userId;
+        this.username = user.username;
+        this.password = user.password;
+        this.passwordUpdatedTimestamp = user.passwordUpdatedTimestamp;
+        this.enabled = user.enabled;
+        this.interimRegister = user.interimRegister;
+        this.loginErrorCount = user.loginErrorCount;
+        this.lockoutTimestamp = user.lockoutTimestamp;
+        this.lastLoginTimestamp = user.lastLoginTimestamp;
+        this.logoutTimestamp = user.logoutTimestamp;
+        this.registerTimestamp = user.registerTimestamp;
+        this.registerUserId = user.registerUserId;
+        this.updatedTimestamp = user.updatedTimestamp;
+        this.updatedUserId = user.updatedUserId;
+        this.version = user.version;
+    }
 
     /**
      * ユーザIDを取得する。

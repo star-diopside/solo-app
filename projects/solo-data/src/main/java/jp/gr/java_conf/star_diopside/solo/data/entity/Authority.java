@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -48,6 +49,7 @@ public class Authority implements Serializable {
     private String updatedUserId;
 
     /** バージョン */
+    @Version
     private Integer version;
 
     /**

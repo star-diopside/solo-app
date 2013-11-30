@@ -1,5 +1,9 @@
 package jp.gr.java_conf.star_diopside.solo.web.mvc.auth.controller;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -7,6 +11,7 @@ import jp.gr.java_conf.star_diopside.solo.web.mvc.auth.form.AA01S010Form;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.WebAttributes;
@@ -23,6 +28,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AA01S010Controller {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AA01S010Controller.class);
+    private static final Map<String, String> EXCEPTION_MAP;
+
+    static {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(BadCredentialsException.class.getName(), "Error.BadCredential");
+        map.put(UsernameNotFoundException.class.getName(), "Error.BadCredential");
+        map.put(AccountExpiredException.class.getName(), "Error.UserInvalid");
+        EXCEPTION_MAP = Collections.unmodifiableMap(map);
+    }
 
     /**
      * 画面表示処理を行う。
@@ -49,11 +63,14 @@ public class AA01S010Controller {
         // 認証エラー例外を取得する。
         Exception exception = (Exception) session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
 
-        if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
-            errors.reject("Error.BadCredential");
-        } else if (exception != null) {
-            LOGGER.error(exception.getMessage(), exception);
-            errors.reject("Error.Authentication");
+        if (exception != null) {
+            String errorCode = EXCEPTION_MAP.get(exception.getClass().getName());
+            if (errorCode != null) {
+                errors.reject(errorCode);
+            } else {
+                LOGGER.debug(exception.getMessage(), exception);
+                errors.reject("Error.Authentication");
+            }
         }
 
         return "auth/AA01S010";

@@ -17,11 +17,15 @@
     </security:http>
 
     <security:authentication-manager>
-        <security:authentication-provider user-service-ref="userDetailsService">
-            <security:password-encoder ref="passwordEncoder" />
-        </security:authentication-provider>
+        <security:authentication-provider ref="userAuthenticationProvider" />
     </security:authentication-manager>
 
-    <bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
+    <bean id="userAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService" />
+        <property name="passwordEncoder" ref="passwordEncoder" />
+        <property name="preAuthenticationChecks">
+            <bean class="jp.gr.java_conf.star_diopside.solo.service.userdetails.BeforeLoginUserDetailsChecker" />
+        </property>
+    </bean>
 
 </beans>

@@ -8,6 +8,7 @@ import jp.gr.java_conf.star_diopside.solo.data.entity.User;
 import jp.gr.java_conf.star_diopside.solo.data.repository.AuthorityRepository;
 import jp.gr.java_conf.star_diopside.solo.data.repository.UserRepository;
 import jp.gr.java_conf.star_diopside.solo.service.userdetails.LoginUser;
+import jp.gr.java_conf.star_diopside.solo.service.userdetails.LoginUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -57,7 +58,7 @@ public class LoginUserDetailsService extends JdbcDaoImpl {
     protected UserDetails createUserDetails(String username, UserDetails userFromUserQuery,
             List<GrantedAuthority> combinedAuthorities) {
 
-        LoginUser loginUser = (LoginUser) userFromUserQuery;
+        LoginUserDetails loginUser = (LoginUserDetails) userFromUserQuery;
         UserDetails returnUserDetails = super.createUserDetails(username, userFromUserQuery, combinedAuthorities);
 
         return new LoginUser(returnUserDetails, loginUser);

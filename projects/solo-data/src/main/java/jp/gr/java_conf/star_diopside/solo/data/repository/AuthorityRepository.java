@@ -6,6 +6,8 @@ import jp.gr.java_conf.star_diopside.solo.data.entity.Authority;
 import jp.gr.java_conf.star_diopside.solo.data.entity.AuthorityPk;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * 権限リポジトリインタフェース
@@ -19,5 +21,14 @@ public interface AuthorityRepository extends JpaRepository<Authority, AuthorityP
      * @return 権限情報一覧
      */
     List<Authority> findByUserId(String userId);
+
+    /**
+     * ユーザIDを条件に権限情報を削除する。
+     * 
+     * @param userId ユーザID
+     */
+    @Modifying
+    @Query("delete from Authority a where a.userId = ?1")
+    void deleteByUserId(String userId);
 
 }
