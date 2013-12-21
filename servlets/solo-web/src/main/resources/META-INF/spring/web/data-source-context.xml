@@ -16,6 +16,11 @@
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter" />
         </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="openjpa.Log">slf4j</prop>
+            </props>
+        </property>
     </bean>
 
     <tx:jta-transaction-manager />

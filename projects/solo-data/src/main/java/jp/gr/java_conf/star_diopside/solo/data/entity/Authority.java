@@ -1,13 +1,15 @@
 package jp.gr.java_conf.star_diopside.solo.data.entity;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -34,7 +36,8 @@ public class Authority implements Serializable {
 
     /** 登録日時 */
     @Column(name = "register_timestamp")
-    private Timestamp registerTimestamp;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registerTimestamp;
 
     /** 登録ユーザID */
     @Column(name = "register_user_id")
@@ -42,7 +45,8 @@ public class Authority implements Serializable {
 
     /** 更新日時 */
     @Column(name = "updated_timestamp")
-    private Timestamp updatedTimestamp;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedTimestamp;
 
     /** 更新ユーザID */
     @Column(name = "updated_user_id")
@@ -93,7 +97,7 @@ public class Authority implements Serializable {
      * 
      * @return 登録日時
      */
-    public Timestamp getRegisterTimestamp() {
+    public Date getRegisterTimestamp() {
         return registerTimestamp;
     }
 
@@ -102,7 +106,7 @@ public class Authority implements Serializable {
      * 
      * @param registerTimestamp 登録日時
      */
-    public void setRegisterTimestamp(Timestamp registerTimestamp) {
+    public void setRegisterTimestamp(Date registerTimestamp) {
         this.registerTimestamp = registerTimestamp;
     }
 
@@ -129,7 +133,7 @@ public class Authority implements Serializable {
      * 
      * @return 更新日時
      */
-    public Timestamp getUpdatedTimestamp() {
+    public Date getUpdatedTimestamp() {
         return updatedTimestamp;
     }
 
@@ -138,7 +142,7 @@ public class Authority implements Serializable {
      * 
      * @param updatedTimestamp 更新日時
      */
-    public void setUpdatedTimestamp(Timestamp updatedTimestamp) {
+    public void setUpdatedTimestamp(Date updatedTimestamp) {
         this.updatedTimestamp = updatedTimestamp;
     }
 

@@ -1,22 +1,15 @@
 package jp.gr.java_conf.star_diopside.solo.service.userdetails;
 
-import java.util.Collection;
+import java.util.Date;
 
 import jp.gr.java_conf.star_diopside.solo.data.entity.User;
 
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * ログインユーザ情報詳細インタフェース
  */
-public interface LoginUserDetails {
-
-    /**
-     * ユーザ権限情報を取得する。
-     * 
-     * @return ユーザ権限情報
-     */
-    Collection<? extends GrantedAuthority> getAuthorities();
+public interface LoginUserDetails extends UserDetails {
 
     /**
      * ユーザIDを取得する。
@@ -33,39 +26,18 @@ public interface LoginUserDetails {
     String getNickname();
 
     /**
-     * パスワードを取得する。
+     * 最終ログイン日時を取得する。
      * 
-     * @return パスワード
+     * @return 最終ログイン日時
      */
-    String getPassword();
+    Date getLastLoginTimestamp();
 
     /**
-     * アカウントが有効期限切れであるかを示す値を取得する。
+     * ログアウト日時を取得する。
      * 
-     * @return アカウントが有効な場合はtrue、無効な場合はfalse。
+     * @return ログアウト日時
      */
-    boolean isAccountNonExpired();
-
-    /**
-     * アカウント化ロックされているかを示す値を取得する。
-     * 
-     * @return アカウントがロックされていない場合はtrue、ロックされている場合はfalse。
-     */
-    boolean isAccountNonLocked();
-
-    /**
-     * 資格情報(パスワード)が有効期限切れであるかを示す値を取得する。
-     * 
-     * @return 資格情報が有効な場合はtrue、無効な場合はfalse。
-     */
-    boolean isCredentialsNonExpired();
-
-    /**
-     * ユーザが有効であるかを示す値を取得する。
-     * 
-     * @return ユーザが有効な場合はtrue、無効な場合はfalse。
-     */
-    boolean isEnabled();
+    Date getLogoutTimestamp();
 
     /**
      * ユーザエンティティに変換する。
@@ -73,5 +45,13 @@ public interface LoginUserDetails {
      * @return ユーザエンティティ
      */
     User convertUserEntity();
+
+    /**
+     * ログイン情報を更新する。
+     * 
+     * @param userDetails ユーザ情報
+     * @param user ユーザエンティティ
+     */
+    void update(UserDetails userDetails, User user);
 
 }

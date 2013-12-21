@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import jp.gr.java_conf.star_diopside.solo.service.exception.DualLoginException;
 import jp.gr.java_conf.star_diopside.solo.web.mvc.auth.form.AA01S010Form;
 
 import org.slf4j.Logger;
@@ -16,9 +17,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * AA01S010(ユーザログイン)画面コントローラ
@@ -35,6 +38,7 @@ public class AA01S010Controller {
         map.put(BadCredentialsException.class.getName(), "Error.BadCredential");
         map.put(UsernameNotFoundException.class.getName(), "Error.BadCredential");
         map.put(AccountExpiredException.class.getName(), "Error.UserInvalid");
+        map.put(DualLoginException.class.getName(), "Error.DualLogin");
         EXCEPTION_MAP = Collections.unmodifiableMap(map);
     }
 
@@ -42,26 +46,15 @@ public class AA01S010Controller {
      * 画面表示処理を行う。
      * 
      * @param form フォーム情報
+     * @param model モデルマップ
+     * @param errors エラー情報
      * @return 処理結果
      */
     @RequestMapping(method = RequestMethod.GET)
-    public String show(AA01S010Form form) {
-        return "auth/AA01S010";
-    }
+    public String show(AA01S010Form form, ModelMap model, Errors errors) {
 
-    /**
-     * 認証エラー処理を行う。
-     * 
-     * @param form フォーム情報
-     * @param errors エラー情報
-     * @param session セッション情報
-     * @return 処理結果
-     */
-    @RequestMapping(value = "failure", method = RequestMethod.GET)
-    public String failure(AA01S010Form form, Errors errors, HttpSession session) {
-
-        // 認証エラー例外を取得する。
-        Exception exception = (Exception) session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+        // 認証エラーメッセージを取得する。
+        Exception exception = (Exception) model.get(WebAttributes.AUTHENTICATION_EXCEPTION);
 
         if (exception != null) {
             String errorCode = EXCEPTION_MAP.get(exception.getClass().getName());
@@ -74,6 +67,27 @@ public class AA01S010Controller {
         }
 
         return "auth/AA01S010";
+    }
+
+    /**
+     * 認証エラー処理を行う。
+     * 
+     * @param form フォーム情報
+     * @param session セッション情報
+     * @param attr リダイレクト属性情報
+     * @return 処理結果
+     */
+    @RequestMapping(value = "failure", method = RequestMethod.GET)
+    public String failure(AA01S010Form form, HttpSession session, RedirectAttributes attr) {
+
+        // 認証エラー例外を取得する。
+        Exception exception = (Exception) session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+
+        if (exception != null) {
+            attr.addFlashAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, exception);
+        }
+
+        return "redirect:/auth/AA01S010";
     }
 
     /**

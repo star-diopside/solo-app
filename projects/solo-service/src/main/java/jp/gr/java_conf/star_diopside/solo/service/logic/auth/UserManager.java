@@ -1,6 +1,6 @@
 package jp.gr.java_conf.star_diopside.solo.service.logic.auth;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import jp.gr.java_conf.star_diopside.solo.core.exception.BusinessException;
@@ -10,6 +10,7 @@ import jp.gr.java_conf.star_diopside.solo.data.repository.AuthorityRepository;
 import jp.gr.java_conf.star_diopside.solo.data.repository.UserRepository;
 import jp.gr.java_conf.star_diopside.solo.service.userdetails.LoginUserDetails;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -55,7 +56,7 @@ public class UserManager {
         }
 
         // 現在時刻を取得する。
-        Timestamp current = new Timestamp(System.currentTimeMillis());
+        Date current = new Date();
 
         // ユーザ情報の登録を行う。
         User user = new User();
@@ -118,7 +119,93 @@ public class UserManager {
         if (!valid) {
             authorityRepository.deleteByUserId(user.getUserId());
             userRepository.delete(user);
-            throw new AccountExpiredException(this.messages.getMessage("Error.UserInvalid"));
+            throw new AccountExpiredException(messages.getMessage("Error.UserInvalid"));
         }
+    }
+
+    /**
+     * ログイン成功時の処理を行う。
+     * 
+     * @param loginUser ユーザ情報
+     */
+    @Transactional
+    public void loginSuccess(LoginUserDetails loginUser) {
+
+        User user = loginUser.convertUserEntity();
+        Date current = new Date();
+
+        user.setLoginErrorCount(0);
+        user.setLastLoginTimestamp(current);
+        user.setLogoutTimestamp(null);
+        user.setUpdatedTimestamp(current);
+        user.setUpdatedUserId(user.getUserId());
+
+        userRepository.save(user);
+    }
+
+    /**
+     * ログイン失敗時の処理を行う。
+     * 
+     * @param userId ユーザID
+     */
+    @Transactional
+    public void loginFailure(String userId) {
+
+        User user = userRepository.findOne(userId);
+        Date current = new Date();
+
+        user.setLoginErrorCount(user.getLoginErrorCount() + 1);
+        user.setUpdatedTimestamp(current);
+        user.setUpdatedUserId(userId);
+
+        userRepository.save(user);
+    }
+
+    /**
+     * ログアウト処理を行う。
+     * 
+     * @param loginUser ユーザ情報
+     */
+    @Transactional
+    public void logout(LoginUserDetails loginUser) {
+
+        String userId = loginUser.getUserId();
+        User user = userRepository.findOne(userId);
+
+        // ログイン情報が更新されていない場合、ログアウト処理を行う。
+        if (!checkLoginInfo(loginUser, user)) {
+            Date current = new Date();
+            user.setLogoutTimestamp(current);
+            user.setUpdatedTimestamp(current);
+            user.setUpdatedUserId(userId);
+            userRepository.save(user);
+        }
+    }
+
+    /**
+     * 二重ログインチェックを行う。
+     * 
+     * @param loginUser ユーザ情報
+     * @return 二重ログインエラーの場合はtrue、それ以外の場合はfalse。
+     */
+    @Transactional
+    public boolean checkDualLogin(LoginUserDetails loginUser) {
+
+        User user = userRepository.findOne(loginUser.getUserId());
+        return checkLoginInfo(loginUser, user);
+    }
+
+    /**
+     * ログイン情報の不変チェックを行う。
+     * 
+     * @param loginUser ログインユーザ情報
+     * @param user ユーザテーブルから取得したユーザ情報
+     * @return ログイン後にログイン情報が更新されている場合はtrue、それ以外の場合はfalse。
+     */
+    private boolean checkLoginInfo(LoginUserDetails loginUser, User user) {
+
+        // 最終ログイン日時、ログアウト日時の判定を行う。
+        return !ObjectUtils.equals(loginUser.getLastLoginTimestamp(), user.getLastLoginTimestamp())
+                || !ObjectUtils.equals(loginUser.getLogoutTimestamp(), user.getLogoutTimestamp());
     }
 }
