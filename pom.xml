@@ -82,6 +82,11 @@
         <dependencies>
             <dependency>
                 <groupId>jp.gr.java_conf.star_diopside.solo</groupId>
+                <artifactId>common-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jp.gr.java_conf.star_diopside.solo</groupId>
                 <artifactId>solo-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
