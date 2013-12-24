@@ -105,7 +105,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
             }
 
             // データベースからセッション情報を削除する。
-            if (request.isRequestedSessionIdValid()) {
+            if (!request.isRequestedSessionIdValid()) {
                 getJdbcTemplate().update(deleteSessionSql, new Object[] { requestedSessionId },
                         new int[] { Types.VARCHAR });
             }
