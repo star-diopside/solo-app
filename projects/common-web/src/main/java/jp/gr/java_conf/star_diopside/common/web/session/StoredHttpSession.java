@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
  */
 public class StoredHttpSession extends HttpSessionWrapper {
 
-    private static final String MODIFIED_TIME_KEY = StoredHttpSession.class.getName() + ".modifiedTime";
+    private long modifiedTime;
 
     /**
      * コンストラクタ
@@ -16,11 +16,7 @@ public class StoredHttpSession extends HttpSessionWrapper {
      */
     public StoredHttpSession(HttpSession session) {
         super(session);
-        synchronized (session) {
-            if (getModifiedTime() == null) {
-                updateModifiedTime();
-            }
-        }
+        modifiedTime = System.currentTimeMillis();
     }
 
     /**
@@ -28,22 +24,15 @@ public class StoredHttpSession extends HttpSessionWrapper {
      * 
      * @return セッション属性の変更時刻のタイムスタンプ
      */
-    public final Long getModifiedTime() {
-        return (Long) getSession().getAttribute(MODIFIED_TIME_KEY);
-    }
-
-    /**
-     * セッション属性の変更時刻のタイムスタンプを更新する。
-     */
-    protected final void updateModifiedTime() {
-        getSession().setAttribute(MODIFIED_TIME_KEY, System.currentTimeMillis());
+    public final long getModifiedTime() {
+        return modifiedTime;
     }
 
     @Override
     public Object getAttribute(String name) {
         Object attribute = super.getAttribute(name);
         if (isMutable(attribute)) {
-            updateModifiedTime();
+            modifiedTime = System.currentTimeMillis();
         }
         return attribute;
     }
@@ -51,13 +40,13 @@ public class StoredHttpSession extends HttpSessionWrapper {
     @Override
     public void setAttribute(String name, Object value) {
         super.setAttribute(name, value);
-        updateModifiedTime();
+        modifiedTime = System.currentTimeMillis();
     }
 
     @Override
     public void removeAttribute(String name) {
         super.removeAttribute(name);
-        updateModifiedTime();
+        modifiedTime = System.currentTimeMillis();
     }
 
     private boolean isMutable(Object obj) {

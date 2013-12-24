@@ -1,5 +1,7 @@
 package jp.gr.java_conf.star_diopside.common.web.session;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
@@ -8,8 +10,6 @@ import javax.servlet.http.HttpSession;
  * セッションオブジェクトを{@link StoredHttpSession}にラッピングするサーブレットリクエスト
  */
 public class SessionStoreHttpServletRequest extends HttpServletRequestWrapper {
-
-    private StoredHttpSession storedHttpSession;
 
     /**
      * コンストラクタ
@@ -34,10 +34,10 @@ public class SessionStoreHttpServletRequest extends HttpServletRequestWrapper {
 
     private StoredHttpSession getSessionInternal(HttpSession session) {
 
-        if (storedHttpSession == null || storedHttpSession.getSession() != session) {
-            storedHttpSession = new StoredHttpSession(session);
-        }
+        @SuppressWarnings("unchecked")
+        Map<HttpSession, StoredHttpSession> map = (Map<HttpSession, StoredHttpSession>) session.getServletContext()
+                .getAttribute(SessionStoreListener.SESSION_MAP);
 
-        return storedHttpSession;
+        return map.get(session);
     }
 }
