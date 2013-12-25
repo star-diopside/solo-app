@@ -149,11 +149,10 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
     public void removeSession(StoredHttpSession session) {
 
         String sessionId = session.getId();
-        long timestamp;
 
         // データベースに保存されたセッション最終アクセス時刻を取得する。
         try {
-            timestamp = getJdbcTemplate().queryForObject(selectSessionTimestampSql, new Object[] { sessionId },
+            long timestamp = getJdbcTemplate().queryForObject(selectSessionTimestampSql, new Object[] { sessionId },
                     new int[] { Types.VARCHAR }, new RowMapper<Long>() {
                         @Override
                         public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -161,14 +160,13 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
                         }
                     });
 
+            // データベースからセッション情報を削除する。
+            if (session.getModifiedTime() == timestamp) {
+                getJdbcTemplate().update(deleteSessionSql, new Object[] { sessionId }, new int[] { Types.VARCHAR });
+            }
+
         } catch (EmptyResultDataAccessException e) {
             LOG.debug("Not found session for id = " + sessionId, e);
-            return;
-        }
-
-        // データベースからセッション情報を削除する。
-        if (session.getModifiedTime() == timestamp) {
-            getJdbcTemplate().update(deleteSessionSql, new Object[] { sessionId }, new int[] { Types.VARCHAR });
         }
     }
 }

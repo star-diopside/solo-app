@@ -7,7 +7,8 @@ import javax.servlet.http.HttpSession;
  */
 public class StoredHttpSession extends HttpSessionWrapper {
 
-    private long modifiedTime;
+    /** セッション属性変更時刻タイムスタンプ (volatile変数とする) */
+    private volatile long modifiedTime;
 
     /**
      * コンストラクタ

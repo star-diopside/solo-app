@@ -1,7 +1,5 @@
 package jp.gr.java_conf.star_diopside.common.web.session;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
@@ -33,11 +31,6 @@ public class SessionStoreHttpServletRequest extends HttpServletRequestWrapper {
     }
 
     private StoredHttpSession getSessionInternal(HttpSession session) {
-
-        @SuppressWarnings("unchecked")
-        Map<HttpSession, StoredHttpSession> map = (Map<HttpSession, StoredHttpSession>) session.getServletContext()
-                .getAttribute(SessionStoreListener.SESSION_MAP);
-
-        return map.get(session);
+        return SessionStoreListener.getSessionMap(getServletContext()).get(session);
     }
 }
