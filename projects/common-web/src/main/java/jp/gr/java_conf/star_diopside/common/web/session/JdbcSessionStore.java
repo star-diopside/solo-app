@@ -90,7 +90,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
 
             StoredHttpSession session = (StoredHttpSession) request.getSession();
 
-            if (session.getModifiedTime() != timestamp) {
+            if (session.getSerializedModifiedTime() != timestamp) {
                 // データベースからセッション情報を取得する。
                 byte[] data = getJdbcTemplate().queryForObject(selectSessionDataSql,
                         new Object[] { requestedSessionId }, new int[] { Types.VARCHAR }, new RowMapper<byte[]>() {
@@ -101,7 +101,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
                         });
 
                 // セッションをデシリアライズする。
-                SessionSerializationUtils.deserializeSession(data, session);
+                session.deserialize(data);
             }
 
             // データベースからセッション情報を削除する。
@@ -126,7 +126,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
         }
 
         // セッションをシリアライズする。
-        byte[] data = SessionSerializationUtils.serializeSession(session);
+        byte[] data = session.serialize();
 
         // データベースにセッション情報を登録する。
         String sessionId = session.getId();
@@ -161,7 +161,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
                     });
 
             // データベースからセッション情報を削除する。
-            if (session.getModifiedTime() == timestamp) {
+            if (session.getSerializedModifiedTime() == timestamp) {
                 getJdbcTemplate().update(deleteSessionSql, new Object[] { sessionId }, new int[] { Types.VARCHAR });
             }
 

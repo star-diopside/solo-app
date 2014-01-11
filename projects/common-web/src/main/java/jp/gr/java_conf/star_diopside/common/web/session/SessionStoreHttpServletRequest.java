@@ -31,6 +31,6 @@ public class SessionStoreHttpServletRequest extends HttpServletRequestWrapper {
     }
 
     private StoredHttpSession getSessionInternal(HttpSession session) {
-        return SessionStoreListener.getSessionMap(getServletContext()).get(session);
+        return SessionStoreListener.getStoredHttpSession(session);
     }
 }

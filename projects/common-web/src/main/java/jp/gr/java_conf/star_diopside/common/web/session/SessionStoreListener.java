@@ -43,7 +43,17 @@ public class SessionStoreListener implements ServletContextListener, HttpSession
     }
 
     @SuppressWarnings("unchecked")
-    public static ConcurrentHashMap<HttpSession, StoredHttpSession> getSessionMap(ServletContext sc) {
+    private static ConcurrentHashMap<HttpSession, StoredHttpSession> getSessionMap(ServletContext sc) {
         return (ConcurrentHashMap<HttpSession, StoredHttpSession>) sc.getAttribute(SESSION_MAP);
+    }
+
+    /**
+     * セッションオブジェクトをラッピングした{@link StoredHttpSession}オブジェクトを取得する。
+     * 
+     * @param session セッションオブジェクト
+     * @return セッションオブジェクトをラッピングした{@link StoredHttpSession}オブジェクト
+     */
+    public static StoredHttpSession getStoredHttpSession(HttpSession session) {
+        return getSessionMap(session.getServletContext()).get(session);
     }
 }
