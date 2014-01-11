@@ -1,8 +1,11 @@
-package jp.gr.java_conf.star_diopside.common.web.session;
+package jp.gr.java_conf.star_diopside.common.web.session.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+
+import jp.gr.java_conf.star_diopside.common.web.session.servlet.SessionStoreHttpServletRequest;
+import jp.gr.java_conf.star_diopside.common.web.session.servlet.StoredHttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

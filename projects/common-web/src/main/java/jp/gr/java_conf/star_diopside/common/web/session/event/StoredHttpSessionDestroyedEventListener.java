@@ -1,4 +1,6 @@
-package jp.gr.java_conf.star_diopside.common.web.session;
+package jp.gr.java_conf.star_diopside.common.web.session.event;
+
+import jp.gr.java_conf.star_diopside.common.web.session.service.SessionStoreService;
 
 import org.springframework.context.ApplicationListener;
 

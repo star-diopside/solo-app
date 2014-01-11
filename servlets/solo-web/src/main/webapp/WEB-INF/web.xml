@@ -12,7 +12,7 @@
     </listener>
 
     <listener>
-        <listener-class>jp.gr.java_conf.star_diopside.common.web.session.SessionStoreListener</listener-class>
+        <listener-class>jp.gr.java_conf.star_diopside.common.web.session.servlet.SessionStoreListener</listener-class>
     </listener>
 
     <filter>

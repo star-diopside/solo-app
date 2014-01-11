@@ -5,7 +5,7 @@
 
     <import resource="classpath:/META-INF/spring/common/web/session-context.xml" />
 
-    <bean id="sessionStoreService" class="jp.gr.java_conf.star_diopside.common.web.session.JdbcSessionStore">
+    <bean id="sessionStoreService" class="jp.gr.java_conf.star_diopside.common.web.session.service.JdbcSessionStore">
         <property name="dataSource" ref="dataSource" />
     </bean>
 

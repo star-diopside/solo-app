@@ -1,4 +1,7 @@
-package jp.gr.java_conf.star_diopside.common.web.session;
+package jp.gr.java_conf.star_diopside.common.web.session.service;
+
+import jp.gr.java_conf.star_diopside.common.web.session.servlet.SessionStoreHttpServletRequest;
+import jp.gr.java_conf.star_diopside.common.web.session.servlet.StoredHttpSession;
 
 /**
  * セッション永続化機能を示すインタフェース

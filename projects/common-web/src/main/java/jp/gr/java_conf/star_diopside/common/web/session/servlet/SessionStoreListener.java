@@ -1,4 +1,4 @@
-package jp.gr.java_conf.star_diopside.common.web.session;
+package jp.gr.java_conf.star_diopside.common.web.session.servlet;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import jp.gr.java_conf.star_diopside.common.web.session.event.StoredHttpSessionDestroyedEvent;
+
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
@@ -16,16 +18,16 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  */
 public class SessionStoreListener implements ServletContextListener, HttpSessionListener {
 
-    private static final String SESSION_MAP = SessionStoreListener.class.getName() + ".SESSION_MAP";
+    private static final String SESSION_MAP_KEY = SessionStoreListener.class.getName() + ".SESSION_MAP";
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        sce.getServletContext().setAttribute(SESSION_MAP, new ConcurrentHashMap<HttpSession, StoredHttpSession>());
+        sce.getServletContext().setAttribute(SESSION_MAP_KEY, new ConcurrentHashMap<HttpSession, StoredHttpSession>());
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        sce.getServletContext().removeAttribute(SESSION_MAP);
+        sce.getServletContext().removeAttribute(SESSION_MAP_KEY);
     }
 
     @Override
@@ -44,7 +46,7 @@ public class SessionStoreListener implements ServletContextListener, HttpSession
 
     @SuppressWarnings("unchecked")
     private static ConcurrentHashMap<HttpSession, StoredHttpSession> getSessionMap(ServletContext sc) {
-        return (ConcurrentHashMap<HttpSession, StoredHttpSession>) sc.getAttribute(SESSION_MAP);
+        return (ConcurrentHashMap<HttpSession, StoredHttpSession>) sc.getAttribute(SESSION_MAP_KEY);
     }
 
     /**

@@ -1,4 +1,4 @@
-package jp.gr.java_conf.star_diopside.common.web.session;
+package jp.gr.java_conf.star_diopside.common.web.session.servlet;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -123,14 +123,14 @@ public class StoredHttpSession extends HttpSessionWrapper {
         // セッション情報をデシリアライズする。
         int interval;
         Map<String, Object> attributes;
-        long time;
+        long timestamp;
 
         try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
             interval = ois.readInt();
             @SuppressWarnings("unchecked")
             Map<String, Object> attr = (Map<String, Object>) ois.readObject();
             attributes = attr;
-            time = ois.readInt();
+            timestamp = ois.readLong();
         } catch (IOException | ClassNotFoundException e) {
             throw new SerializationException(e);
         }
@@ -146,10 +146,10 @@ public class StoredHttpSession extends HttpSessionWrapper {
             session.setAttribute(e.getKey(), e.getValue());
         }
         session.setMaxInactiveInterval(interval);
-        modifiedTime = time;
+        modifiedTime = timestamp;
 
         // 永続化時のセッション属性変更時刻タイムスタンプを更新する。
-        serializedModifiedTime = modifiedTime;
+        serializedModifiedTime = timestamp;
     }
 
     private boolean isMutable(Object obj) {
