@@ -29,4 +29,9 @@ public interface SessionStoreService {
      */
     void removeSession(StoredHttpSession session);
 
+    /**
+     * 無効セッションをストアから削除する。
+     */
+    void removeInvalidSession();
+
 }

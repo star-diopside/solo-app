@@ -95,9 +95,9 @@ public class StoredHttpSession extends HttpSessionWrapper {
 
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             try (ObjectOutputStream oos = new ObjectOutputStream(bos)) {
+                oos.writeLong(modifiedTime);
                 oos.writeInt(session.getMaxInactiveInterval());
                 oos.writeObject(attributes);
-                oos.writeLong(modifiedTime);
             }
             data = bos.toByteArray();
 
@@ -121,16 +121,16 @@ public class StoredHttpSession extends HttpSessionWrapper {
         HttpSession session = getSession();
 
         // セッション情報をデシリアライズする。
+        long timestamp;
         int interval;
         Map<String, Object> attributes;
-        long timestamp;
 
         try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
+            timestamp = ois.readLong();
             interval = ois.readInt();
             @SuppressWarnings("unchecked")
             Map<String, Object> attr = (Map<String, Object>) ois.readObject();
             attributes = attr;
-            timestamp = ois.readLong();
         } catch (IOException | ClassNotFoundException e) {
             throw new SerializationException(e);
         }

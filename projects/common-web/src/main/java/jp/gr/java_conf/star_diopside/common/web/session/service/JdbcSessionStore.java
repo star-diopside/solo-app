@@ -3,6 +3,7 @@ package jp.gr.java_conf.star_diopside.common.web.session.service;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.concurrent.TimeUnit;
 
 import jp.gr.java_conf.star_diopside.common.web.session.servlet.SessionStoreHttpServletRequest;
 import jp.gr.java_conf.star_diopside.common.web.session.servlet.StoredHttpSession;
@@ -13,6 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.core.support.SqlLobValue;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -25,30 +27,48 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
     private String sessionTableName = "sessions";
     private String sessionIdColumnName = "id";
     private String sessionDataColumnName = "data";
-    private String sessionTimestampColumnName = "modified_time";
+    private String sessionModifiedTimeColumnName = "modified_time";
+    private String sessionLastAccessedTimeColumnName = "last_accessed_time";
+    private String sessionMaxInactiveIntervalColumnName = "max_inactive_interval";
+    private String sessionValidColumnName = "valid";
     private String selectLockSqlOption = "for update";
 
     private String countSessionSql;
     private String selectSessionDataSql;
-    private String selectSessionTimestampSql;
+    private String selectSessionModifiedTimeSql;
+    private String selectSessionListSql;
     private String insertSessionSql;
     private String updateSessionSql;
+    private String updateSessionInvalidSql;
     private String deleteSessionSql;
+    private String deleteInvalidSessionSql;
 
-    public String getSessionTableName() {
-        return sessionTableName;
+    public void setSessionTableName(String sessionTableName) {
+        this.sessionTableName = sessionTableName;
     }
 
-    public String getSessionIdColumnName() {
-        return sessionIdColumnName;
+    public void setSessionIdColumnName(String sessionIdColumnName) {
+        this.sessionIdColumnName = sessionIdColumnName;
     }
 
-    public String getSessionDataColumnName() {
-        return sessionDataColumnName;
+    public void setSessionDataColumnName(String sessionDataColumnName) {
+        this.sessionDataColumnName = sessionDataColumnName;
     }
 
-    public String getSessionTimestampColumnName() {
-        return sessionTimestampColumnName;
+    public void setSessionModifiedTimeColumnName(String sessionModifiedTimeColumnName) {
+        this.sessionModifiedTimeColumnName = sessionModifiedTimeColumnName;
+    }
+
+    public void setSessionLastAccessedTimeColumnName(String sessionLastAccessedTimeColumnName) {
+        this.sessionLastAccessedTimeColumnName = sessionLastAccessedTimeColumnName;
+    }
+
+    public void setSessionMaxInactiveIntervalColumnName(String sessionMaxInactiveIntervalColumnName) {
+        this.sessionMaxInactiveIntervalColumnName = sessionMaxInactiveIntervalColumnName;
+    }
+
+    public void setSessionValidColumnName(String sessionValidColumnName) {
+        this.sessionValidColumnName = sessionValidColumnName;
     }
 
     public void setSelectLockSqlOption(String selectLockSqlOption) {
@@ -62,13 +82,23 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
                 + sessionIdColumnName + " = ?";
         selectSessionDataSql = "select " + sessionDataColumnName + " from " + sessionTableName + " where "
                 + sessionIdColumnName + " = ?";
-        selectSessionTimestampSql = "select " + sessionTimestampColumnName + " from " + sessionTableName + " where "
-                + sessionIdColumnName + " = ? " + selectLockSqlOption;
+        selectSessionModifiedTimeSql = "select " + sessionModifiedTimeColumnName + " from " + sessionTableName
+                + " where " + sessionIdColumnName + " = ? " + selectLockSqlOption;
+        selectSessionListSql = "select " + sessionIdColumnName + ", " + sessionModifiedTimeColumnName + ", "
+                + sessionLastAccessedTimeColumnName + ", " + sessionMaxInactiveIntervalColumnName + " from "
+                + sessionTableName + " where " + sessionValidColumnName + " = ?";
         insertSessionSql = "insert into " + sessionTableName + " (" + sessionIdColumnName + ", "
-                + sessionDataColumnName + ", " + sessionTimestampColumnName + ") values (?, ?, ?)";
+                + sessionDataColumnName + ", " + sessionModifiedTimeColumnName + ", "
+                + sessionLastAccessedTimeColumnName + ", " + sessionMaxInactiveIntervalColumnName + ", "
+                + sessionValidColumnName + ") values (?, ?, ?, ?, ?, ?)";
         updateSessionSql = "update " + sessionTableName + " set " + sessionDataColumnName + " = ?, "
-                + sessionTimestampColumnName + " = ? where " + sessionIdColumnName + " = ?";
+                + sessionModifiedTimeColumnName + " = ?, " + sessionLastAccessedTimeColumnName + " = ?, "
+                + sessionMaxInactiveIntervalColumnName + " = ?, " + sessionValidColumnName + " = ? where "
+                + sessionIdColumnName + " = ?";
+        updateSessionInvalidSql = "update " + sessionTableName + " set " + sessionValidColumnName + " = ? where "
+                + sessionIdColumnName + " = ? and " + sessionModifiedTimeColumnName + " = ?";
         deleteSessionSql = "delete from " + sessionTableName + " where " + sessionIdColumnName + " = ?";
+        deleteInvalidSessionSql = "delete from " + sessionTableName + " where " + sessionValidColumnName + " = ?";
     }
 
     @Override
@@ -83,7 +113,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
 
         try {
             // データベースに保存されたセッション最終アクセス時刻を取得する。
-            long timestamp = getJdbcTemplate().queryForObject(selectSessionTimestampSql,
+            long timestamp = getJdbcTemplate().queryForObject(selectSessionModifiedTimeSql,
                     new Object[] { requestedSessionId }, new int[] { Types.VARCHAR }, new RowMapper<Long>() {
                         @Override
                         public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -137,13 +167,17 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
                 new int[] { Types.VARCHAR }, Integer.class);
 
         if (count.intValue() == 0) {
-            getJdbcTemplate().update(insertSessionSql,
-                    new Object[] { sessionId, new SqlLobValue(data), session.getModifiedTime() },
-                    new int[] { Types.VARCHAR, Types.BLOB, Types.BIGINT });
+            getJdbcTemplate().update(
+                    insertSessionSql,
+                    new Object[] { sessionId, new SqlLobValue(data), session.getModifiedTime(),
+                            session.getLastAccessedTime(), session.getMaxInactiveInterval(), Boolean.TRUE },
+                    new int[] { Types.VARCHAR, Types.BLOB, Types.BIGINT, Types.BIGINT, Types.INTEGER, Types.BOOLEAN });
         } else {
-            getJdbcTemplate().update(updateSessionSql,
-                    new Object[] { new SqlLobValue(data), session.getModifiedTime(), sessionId },
-                    new int[] { Types.BLOB, Types.BIGINT, Types.VARCHAR });
+            getJdbcTemplate().update(
+                    updateSessionSql,
+                    new Object[] { new SqlLobValue(data), session.getModifiedTime(), session.getLastAccessedTime(),
+                            session.getMaxInactiveInterval(), Boolean.TRUE, sessionId },
+                    new int[] { Types.BLOB, Types.BIGINT, Types.BIGINT, Types.INTEGER, Types.BOOLEAN, Types.VARCHAR });
         }
     }
 
@@ -155,7 +189,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
 
         // データベースに保存されたセッション最終アクセス時刻を取得する。
         try {
-            long timestamp = getJdbcTemplate().queryForObject(selectSessionTimestampSql, new Object[] { sessionId },
+            long timestamp = getJdbcTemplate().queryForObject(selectSessionModifiedTimeSql, new Object[] { sessionId },
                     new int[] { Types.VARCHAR }, new RowMapper<Long>() {
                         @Override
                         public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -170,6 +204,34 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
 
         } catch (EmptyResultDataAccessException e) {
             LOG.debug("Not found session for id = " + sessionId, e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeInvalidSession() {
+
+        // データベースから無効なセッション情報を削除する。
+        getJdbcTemplate().update(deleteInvalidSessionSql, new Object[] { Boolean.FALSE }, new int[] { Types.BOOLEAN });
+
+        // セッション一覧を取得し、無効なセッションを更新する。
+        SqlRowSet srs = getJdbcTemplate().queryForRowSet(selectSessionListSql, new Object[] { Boolean.TRUE },
+                new int[] { Types.BOOLEAN });
+        long current = System.currentTimeMillis();
+
+        while (srs.next()) {
+            // データベースのセッション情報を取得する。
+            String sessionId = srs.getString(1);
+            long modifiedTime = srs.getLong(2);
+            long lastAccessedTime = srs.getLong(3);
+            int maxInactiveInterval = srs.getInt(4);
+
+            // 無効なセッションの場合、有効フラグを更新する。
+            if (lastAccessedTime + TimeUnit.SECONDS.toMillis(maxInactiveInterval) < current) {
+                getJdbcTemplate().update(updateSessionInvalidSql,
+                        new Object[] { Boolean.FALSE, sessionId, modifiedTime },
+                        new int[] { Types.BOOLEAN, Types.VARCHAR, Types.BIGINT });
+            }
         }
     }
 }
