@@ -9,6 +9,7 @@
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/dataSource" />
+    <jee:jndi-lookup id="sessionStoreDataSource" jndi-name="java:comp/env/jdbc/session-store" />
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="jtaDataSource" ref="dataSource" />

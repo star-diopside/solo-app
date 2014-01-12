@@ -12,6 +12,10 @@
                 <groupId>console.dbpool</groupId>
                 <artifactId>jdbc_solo</artifactId>
             </dependency>
+            <dependency>
+                <groupId>console.dbpool</groupId>
+                <artifactId>jdbc_session-store</artifactId>
+            </dependency>
         </dependencies>
         <hidden-classes>
             <filter>ch.qos.logback.core</filter>
@@ -24,5 +28,9 @@
     <resource-ref xmlns="http://geronimo.apache.org/xml/ns/naming-1.2">
         <ref-name>jdbc/dataSource</ref-name>
         <resource-link>jdbc/solo</resource-link>
+    </resource-ref>
+    <resource-ref xmlns="http://geronimo.apache.org/xml/ns/naming-1.2">
+        <ref-name>jdbc/session-store</ref-name>
+        <resource-link>jdbc/session-store</resource-link>
     </resource-ref>
 </web-app>

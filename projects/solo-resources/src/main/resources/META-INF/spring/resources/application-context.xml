@@ -8,7 +8,9 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="jp.gr.java_conf.star_diopside.solo" />
+    <context:component-scan base-package="jp.gr.java_conf.star_diopside.solo">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
 
     <bean id="logging" class="jp.gr.java_conf.star_diopside.solo.core.interceptor.CustomLoggingInterceptor" />
 
