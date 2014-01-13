@@ -13,14 +13,14 @@ public interface SessionStoreService {
      * 
      * @param request サーブレットリクエスト
      */
-    public void readSession(SessionStoreHttpServletRequest request);
+    void readSession(SessionStoreHttpServletRequest request);
 
     /**
      * セッション情報をストアに永続化する。
      * 
      * @param request サーブレットリクエスト
      */
-    public void storeSession(SessionStoreHttpServletRequest request);
+    void storeSession(SessionStoreHttpServletRequest request);
 
     /**
      * セッション情報をストアから削除する。
