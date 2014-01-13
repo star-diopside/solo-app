@@ -18,7 +18,7 @@
 
     <task:scheduled-tasks scheduler="sessionStoreTaskScheduler">
         <task:scheduled ref="sessionStoreService" method="removeInvalidSession"
-            initial-delay="300000" fixed-delay="1800000" />
+            initial-delay="300000" fixed-delay="3600000" />
     </task:scheduled-tasks>
 
 </beans>
