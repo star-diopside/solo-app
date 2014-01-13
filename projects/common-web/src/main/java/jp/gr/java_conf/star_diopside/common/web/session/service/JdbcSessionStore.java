@@ -30,7 +30,6 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
     private String sessionModifiedTimeColumnName = "modified_time";
     private String sessionLastAccessedTimeColumnName = "last_accessed_time";
     private String sessionMaxInactiveIntervalColumnName = "max_inactive_interval";
-    private String sessionValidColumnName = "valid";
     private String selectLockSqlOption = "for update";
 
     private String countSessionSql;
@@ -39,7 +38,6 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
     private String selectSessionListSql;
     private String insertSessionSql;
     private String updateSessionSql;
-    private String updateSessionInvalidSql;
     private String deleteSessionSql;
     private String deleteInvalidSessionSql;
 
@@ -67,10 +65,6 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
         this.sessionMaxInactiveIntervalColumnName = sessionMaxInactiveIntervalColumnName;
     }
 
-    public void setSessionValidColumnName(String sessionValidColumnName) {
-        this.sessionValidColumnName = sessionValidColumnName;
-    }
-
     public void setSelectLockSqlOption(String selectLockSqlOption) {
         this.selectLockSqlOption = selectLockSqlOption;
     }
@@ -86,19 +80,17 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
                 + " where " + sessionIdColumnName + " = ? " + selectLockSqlOption;
         selectSessionListSql = "select " + sessionIdColumnName + ", " + sessionModifiedTimeColumnName + ", "
                 + sessionLastAccessedTimeColumnName + ", " + sessionMaxInactiveIntervalColumnName + " from "
-                + sessionTableName + " where " + sessionValidColumnName + " = ?";
+                + sessionTableName;
         insertSessionSql = "insert into " + sessionTableName + " (" + sessionIdColumnName + ", "
                 + sessionDataColumnName + ", " + sessionModifiedTimeColumnName + ", "
-                + sessionLastAccessedTimeColumnName + ", " + sessionMaxInactiveIntervalColumnName + ", "
-                + sessionValidColumnName + ") values (?, ?, ?, ?, ?, ?)";
+                + sessionLastAccessedTimeColumnName + ", " + sessionMaxInactiveIntervalColumnName
+                + ") values (?, ?, ?, ?, ?)";
         updateSessionSql = "update " + sessionTableName + " set " + sessionDataColumnName + " = ?, "
                 + sessionModifiedTimeColumnName + " = ?, " + sessionLastAccessedTimeColumnName + " = ?, "
-                + sessionMaxInactiveIntervalColumnName + " = ?, " + sessionValidColumnName + " = ? where "
-                + sessionIdColumnName + " = ?";
-        updateSessionInvalidSql = "update " + sessionTableName + " set " + sessionValidColumnName + " = ? where "
-                + sessionIdColumnName + " = ? and " + sessionModifiedTimeColumnName + " = ?";
+                + sessionMaxInactiveIntervalColumnName + " = ? where " + sessionIdColumnName + " = ?";
         deleteSessionSql = "delete from " + sessionTableName + " where " + sessionIdColumnName + " = ?";
-        deleteInvalidSessionSql = "delete from " + sessionTableName + " where " + sessionValidColumnName + " = ?";
+        deleteInvalidSessionSql = "delete from " + sessionTableName + " where " + sessionIdColumnName + " = ? and "
+                + sessionModifiedTimeColumnName + " = ?";
     }
 
     @Override
@@ -170,14 +162,14 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
             getJdbcTemplate().update(
                     insertSessionSql,
                     new Object[] { sessionId, new SqlLobValue(data), session.getModifiedTime(),
-                            session.getLastAccessedTime(), session.getMaxInactiveInterval(), Boolean.TRUE },
-                    new int[] { Types.VARCHAR, Types.BLOB, Types.BIGINT, Types.BIGINT, Types.INTEGER, Types.BOOLEAN });
+                            session.getLastAccessedTime(), session.getMaxInactiveInterval() },
+                    new int[] { Types.VARCHAR, Types.BLOB, Types.BIGINT, Types.BIGINT, Types.INTEGER });
         } else {
             getJdbcTemplate().update(
                     updateSessionSql,
                     new Object[] { new SqlLobValue(data), session.getModifiedTime(), session.getLastAccessedTime(),
-                            session.getMaxInactiveInterval(), Boolean.TRUE, sessionId },
-                    new int[] { Types.BLOB, Types.BIGINT, Types.BIGINT, Types.INTEGER, Types.BOOLEAN, Types.VARCHAR });
+                            session.getMaxInactiveInterval(), sessionId },
+                    new int[] { Types.BLOB, Types.BIGINT, Types.BIGINT, Types.INTEGER, Types.VARCHAR });
         }
     }
 
@@ -211,12 +203,8 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
     @Transactional
     public void removeInvalidSession() {
 
-        // データベースから無効なセッション情報を削除する。
-        getJdbcTemplate().update(deleteInvalidSessionSql, new Object[] { Boolean.FALSE }, new int[] { Types.BOOLEAN });
-
         // セッション一覧を取得し、無効なセッションを更新する。
-        SqlRowSet srs = getJdbcTemplate().queryForRowSet(selectSessionListSql, new Object[] { Boolean.TRUE },
-                new int[] { Types.BOOLEAN });
+        SqlRowSet srs = getJdbcTemplate().queryForRowSet(selectSessionListSql);
         long current = System.currentTimeMillis();
 
         while (srs.next()) {
@@ -226,11 +214,10 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
             long lastAccessedTime = srs.getLong(3);
             int maxInactiveInterval = srs.getInt(4);
 
-            // 無効なセッションの場合、有効フラグを更新する。
+            // 無効なセッションの場合、レコードを削除する。
             if (lastAccessedTime + TimeUnit.SECONDS.toMillis(maxInactiveInterval) < current) {
-                getJdbcTemplate().update(updateSessionInvalidSql,
-                        new Object[] { Boolean.FALSE, sessionId, modifiedTime },
-                        new int[] { Types.BOOLEAN, Types.VARCHAR, Types.BIGINT });
+                getJdbcTemplate().update(deleteInvalidSessionSql, new Object[] { sessionId, modifiedTime },
+                        new int[] { Types.VARCHAR, Types.BIGINT });
             }
         }
     }
