@@ -40,8 +40,10 @@ public class SessionStoreListener implements ServletContextListener, HttpSession
     public void sessionDestroyed(HttpSessionEvent se) {
         HttpSession session = se.getSession();
         StoredHttpSession storedHttpSession = getSessionMap(session.getServletContext()).remove(session);
-        StoredHttpSessionDestroyedEvent event = new StoredHttpSessionDestroyedEvent(storedHttpSession);
-        WebApplicationContextUtils.getRequiredWebApplicationContext(session.getServletContext()).publishEvent(event);
+        if (storedHttpSession != null) {
+            StoredHttpSessionDestroyedEvent event = new StoredHttpSessionDestroyedEvent(storedHttpSession);
+            WebApplicationContextUtils.getRequiredWebApplicationContext(session.getServletContext()).publishEvent(event);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -56,6 +58,12 @@ public class SessionStoreListener implements ServletContextListener, HttpSession
      * @return セッションオブジェクトをラッピングした{@link StoredHttpSession}オブジェクト
      */
     public static StoredHttpSession getStoredHttpSession(HttpSession session) {
-        return getSessionMap(session.getServletContext()).get(session);
+        ConcurrentHashMap<HttpSession, StoredHttpSession> sessionMap = getSessionMap(session.getServletContext());
+        StoredHttpSession storedHttpSession = sessionMap.get(session);
+        if (storedHttpSession == null) {
+            storedHttpSession = new StoredHttpSession(session);
+            sessionMap.put(session, storedHttpSession);
+        }
+        return storedHttpSession;
     }
 }
