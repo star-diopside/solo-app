@@ -26,6 +26,8 @@
 
     <tx:jta-transaction-manager />
 
+    <alias name="transactionManager" alias="sessionStoreTransactionManager" />
+
     <tx:annotation-driven />
 
 </beans>

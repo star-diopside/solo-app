@@ -15,7 +15,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.core.support.SqlLobValue;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * セッション永続化にデータソースを使用する{@link SessionStoreService}クラス
@@ -89,7 +88,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
     }
 
     @Override
-    @Transactional
+    @SessionStoreTransactional
     public void readSession(SessionStoreHttpServletRequest request) {
 
         String requestedSessionId = request.getRequestedSessionId();
@@ -136,7 +135,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
     }
 
     @Override
-    @Transactional
+    @SessionStoreTransactional
     public void storeSession(SessionStoreHttpServletRequest request) {
 
         StoredHttpSession session = (StoredHttpSession) request.getSession(false);
@@ -169,7 +168,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
     }
 
     @Override
-    @Transactional
+    @SessionStoreTransactional
     public void removeSession(StoredHttpSession session) {
 
         String sessionId = session.getId();
@@ -196,7 +195,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
     }
 
     @Override
-    @Transactional
+    @SessionStoreTransactional
     public void removeInvalidSession() {
 
         // セッション一覧を取得し、無効なセッションを削除する。
