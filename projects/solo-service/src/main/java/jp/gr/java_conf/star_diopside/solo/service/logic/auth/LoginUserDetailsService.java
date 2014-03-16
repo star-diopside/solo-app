@@ -2,8 +2,8 @@ package jp.gr.java_conf.star_diopside.solo.service.logic.auth;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import jp.gr.java_conf.star_diopside.solo.data.entity.Authority;
 import jp.gr.java_conf.star_diopside.solo.data.entity.User;
 import jp.gr.java_conf.star_diopside.solo.data.repository.AuthorityRepository;
 import jp.gr.java_conf.star_diopside.solo.data.repository.UserRepository;
@@ -31,7 +31,7 @@ public class LoginUserDetailsService extends JdbcDaoImpl {
     protected List<UserDetails> loadUsersByUsername(String username) {
 
         User user = userRepository.findOne(username);
-        ArrayList<UserDetails> userDetails = new ArrayList<UserDetails>();
+        ArrayList<UserDetails> userDetails = new ArrayList<>();
 
         if (user != null) {
             userDetails.add(new LoginUser(user));
@@ -42,16 +42,9 @@ public class LoginUserDetailsService extends JdbcDaoImpl {
 
     @Override
     protected List<GrantedAuthority> loadUserAuthorities(String username) {
-
-        List<Authority> authorities = authorityRepository.findByUserId(username);
-        List<GrantedAuthority> userAuthorities = new ArrayList<GrantedAuthority>(authorities.size());
-
-        for (Authority authority : authorities) {
-            String role = getRolePrefix() + authority.getAuthority();
-            userAuthorities.add(new SimpleGrantedAuthority(role));
-        }
-
-        return userAuthorities;
+        return authorityRepository.findByUserId(username).stream()
+                .map(authority -> new SimpleGrantedAuthority(getRolePrefix() + authority.getAuthority()))
+                .collect(Collectors.toList());
     }
 
     @Override

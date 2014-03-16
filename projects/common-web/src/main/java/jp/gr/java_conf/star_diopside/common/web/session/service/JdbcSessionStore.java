@@ -1,7 +1,5 @@
 package jp.gr.java_conf.star_diopside.common.web.session.service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +9,6 @@ import jp.gr.java_conf.star_diopside.common.web.session.servlet.StoredHttpSessio
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.core.support.SqlLobValue;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -100,24 +97,15 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
         try {
             // データベースに保存されたセッション最終アクセス時刻を取得する。
             long modifiedTime = getJdbcTemplate().queryForObject(selectSessionModifiedTimeSql,
-                    new Object[] { requestedSessionId }, new int[] { Types.VARCHAR }, new RowMapper<Long>() {
-                        @Override
-                        public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
-                            return rs.getLong(1);
-                        }
-                    });
+                    new Object[] { requestedSessionId }, new int[] { Types.VARCHAR }, (rs, rowNum) -> rs.getLong(1));
 
             StoredHttpSession session = (StoredHttpSession) request.getSession();
 
             if (session.getSerializedModifiedTime() != modifiedTime) {
                 // データベースからセッション情報を取得する。
                 byte[] data = getJdbcTemplate().queryForObject(selectSessionDataSql,
-                        new Object[] { requestedSessionId }, new int[] { Types.VARCHAR }, new RowMapper<byte[]>() {
-                            @Override
-                            public byte[] mapRow(ResultSet rs, int rowNum) throws SQLException {
-                                return rs.getBytes(1);
-                            }
-                        });
+                        new Object[] { requestedSessionId }, new int[] { Types.VARCHAR },
+                        (rs, rowNum) -> rs.getBytes(1));
 
                 // セッションをデシリアライズする。
                 session.deserialize(data);
@@ -176,12 +164,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
         // データベースに保存されたセッション最終アクセス時刻を取得する。
         try {
             long modifiedTime = getJdbcTemplate().queryForObject(selectSessionModifiedTimeSql,
-                    new Object[] { sessionId }, new int[] { Types.VARCHAR }, new RowMapper<Long>() {
-                        @Override
-                        public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
-                            return rs.getLong(1);
-                        }
-                    });
+                    new Object[] { sessionId }, new int[] { Types.VARCHAR }, (rs, rowNum) -> rs.getLong(1));
 
             // データベースからセッション情報を削除する。
             if (session.getSerializedModifiedTime() == modifiedTime) {

@@ -83,7 +83,7 @@ public class StoredHttpSession extends HttpSessionWrapper {
         HttpSession session = getSession();
 
         // セッション属性情報を列挙する。
-        HashMap<String, Object> attributes = new HashMap<String, Object>();
+        HashMap<String, Object> attributes = new HashMap<>();
 
         for (Enumeration<String> e = session.getAttributeNames(); e.hasMoreElements();) {
             String key = e.nextElement();
@@ -142,9 +142,7 @@ public class StoredHttpSession extends HttpSessionWrapper {
         }
 
         // デシリアライズしたセッション情報を設定する。
-        for (Map.Entry<String, Object> e : attributes.entrySet()) {
-            session.setAttribute(e.getKey(), e.getValue());
-        }
+        attributes.entrySet().stream().forEach(e -> session.setAttribute(e.getKey(), e.getValue()));
         session.setMaxInactiveInterval(interval);
         modifiedTime = timestamp;
 
@@ -153,12 +151,8 @@ public class StoredHttpSession extends HttpSessionWrapper {
     }
 
     private boolean isMutable(Object obj) {
-        if (obj == null || obj instanceof Boolean || obj instanceof Character || obj instanceof Byte
+        return !(obj == null || obj instanceof Boolean || obj instanceof Character || obj instanceof Byte
                 || obj instanceof Short || obj instanceof Integer || obj instanceof Long || obj instanceof Float
-                || obj instanceof Double || obj instanceof String) {
-            return false;
-        } else {
-            return true;
-        }
+                || obj instanceof Double || obj instanceof String);
     }
 }

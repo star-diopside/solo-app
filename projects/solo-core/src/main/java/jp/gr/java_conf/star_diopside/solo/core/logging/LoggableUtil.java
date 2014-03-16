@@ -35,15 +35,10 @@ public final class LoggableUtil {
      * @param itemName ログ出力項目名称
      */
     public static void addLog(Collection<String> log, Object item, String itemName) {
-
         if (item == null) {
             log.add(itemName + " = " + item);
-
         } else if (item instanceof Loggable) {
-            for (String s : ((Loggable) item).toLogText()) {
-                log.add(itemName + "." + s);
-            }
-
+            ((Loggable) item).toLogText().stream().forEach(s -> log.add(itemName + "." + s));
         } else {
             log.add(itemName + " = " + item.toString());
         }
@@ -71,13 +66,10 @@ public final class LoggableUtil {
      * @param itemName ログ出力リスト項目名称
      */
     public static void addLogList(Collection<String> log, Collection<?> itemList, String itemName) {
-
         if (itemList == null) {
             addLog(log, itemList, itemName);
-
         } else {
             int count = 0;
-
             for (Object o : itemList) {
                 addLog(log, o, itemName + "[" + count + "]");
                 count++;
