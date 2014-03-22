@@ -6,6 +6,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import jp.gr.java_conf.star_diopside.common.web.session.service.SessionStoreService;
 
@@ -30,21 +31,19 @@ public class SessionStoreFilter extends OncePerRequestFilter {
         long beforeModifiedTime = 0;
 
         try {
-            StoredHttpSession session = (StoredHttpSession) req.getSession(false);
-            if (session != null) {
-                synchronized (session) {
-                    sessionStoreService.readSession(req);
-                    beforeModifiedTime = session.getModifiedTime();
-                }
+            HttpSession session = req.getSession();
+            synchronized (session) {
+                sessionStoreService.readSession(req);
+                beforeModifiedTime = ((StoredHttpSession) session).getModifiedTime();
             }
 
             filterChain.doFilter(req, response);
 
         } finally {
-            StoredHttpSession session = (StoredHttpSession) req.getSession(false);
+            HttpSession session = req.getSession(false);
             if (session != null) {
                 synchronized (session) {
-                    long afterModifiedTime = session.getModifiedTime();
+                    long afterModifiedTime = ((StoredHttpSession) session).getModifiedTime();
                     if (beforeModifiedTime != afterModifiedTime) {
                         sessionStoreService.storeSession(req);
                     }

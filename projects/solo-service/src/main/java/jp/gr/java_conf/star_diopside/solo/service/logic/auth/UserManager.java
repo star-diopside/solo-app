@@ -1,6 +1,7 @@
 package jp.gr.java_conf.star_diopside.solo.service.logic.auth;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import jp.gr.java_conf.star_diopside.solo.core.exception.BusinessException;
@@ -10,7 +11,6 @@ import jp.gr.java_conf.star_diopside.solo.data.repository.AuthorityRepository;
 import jp.gr.java_conf.star_diopside.solo.data.repository.UserRepository;
 import jp.gr.java_conf.star_diopside.solo.service.userdetails.LoginUserDetails;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -205,7 +205,7 @@ public class UserManager {
     private boolean checkLoginInfo(LoginUserDetails loginUser, User user) {
 
         // 最終ログイン日時、ログアウト日時の判定を行う。
-        return !ObjectUtils.equals(loginUser.getLastLoginTimestamp(), user.getLastLoginTimestamp())
-                || !ObjectUtils.equals(loginUser.getLogoutTimestamp(), user.getLogoutTimestamp());
+        return !Objects.equals(loginUser.getLastLoginTimestamp(), user.getLastLoginTimestamp())
+                || !Objects.equals(loginUser.getLogoutTimestamp(), user.getLogoutTimestamp());
     }
 }

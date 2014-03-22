@@ -140,7 +140,7 @@ public class JdbcSessionStore extends JdbcDaoSupport implements SessionStoreServ
         Integer count = getJdbcTemplate().queryForObject(countSessionSql, new Object[] { sessionId },
                 new int[] { Types.VARCHAR }, Integer.class);
 
-        if (count.intValue() == 0) {
+        if (count == 0) {
             getJdbcTemplate().update(
                     insertSessionSql,
                     new Object[] { sessionId, new SqlLobValue(data), session.getModifiedTime(),

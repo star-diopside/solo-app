@@ -3,8 +3,9 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/jsp/common/head.jsp" />
-<title>メニュー</title>
+<title>スケジュール検索</title>
 </head>
 <body>
-<h1>メニュー</h1>
+<jsp:include page="/WEB-INF/jsp/common/header.jsp" />
+<h1>スケジュール検索</h1>
 </html>
