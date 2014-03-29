@@ -89,24 +89,19 @@ public class UserRepositoryTest {
                 assertThat(user.getUserId(), is(table.getValue(i, "user_id")));
                 assertThat(user.getUsername(), is(table.getValue(i, "username")));
                 assertThat(user.getPassword(), is(table.getValue(i, "password")));
-                assertThat(user.getPasswordUpdatedTimestamp().getTime(),
-                        is(parseTimeMillis(table.getValue(i, "password_updated_timestamp"))));
+                assertThat(user.getPasswordUpdatedAt().getTime(),
+                        is(parseTimeMillis(table.getValue(i, "password_updated_at"))));
                 assertThat(user.getEnabled(), is(Boolean.valueOf((String) table.getValue(i, "enabled"))));
                 assertThat(user.getInterimRegister(),
                         is(Boolean.valueOf((String) table.getValue(i, "interim_register"))));
                 assertThat(user.getLoginErrorCount(),
                         is(Integer.valueOf((String) table.getValue(i, "login_error_count"))));
-                assertThat(user.getLockoutTimestamp().getTime(),
-                        is(parseTimeMillis(table.getValue(i, "lockout_timestamp"))));
-                assertThat(user.getLastLoginTimestamp().getTime(),
-                        is(parseTimeMillis(table.getValue(i, "last_login_timestamp"))));
-                assertThat(user.getLogoutTimestamp().getTime(),
-                        is(parseTimeMillis(table.getValue(i, "logout_timestamp"))));
-                assertThat(user.getRegisterTimestamp().getTime(),
-                        is(parseTimeMillis(table.getValue(i, "register_timestamp"))));
-                assertThat(user.getRegisterUserId(), is(table.getValue(i, "register_user_id")));
-                assertThat(user.getUpdatedTimestamp().getTime(),
-                        is(parseTimeMillis(table.getValue(i, "updated_timestamp"))));
+                assertThat(user.getLockoutAt().getTime(), is(parseTimeMillis(table.getValue(i, "lockout_at"))));
+                assertThat(user.getLastLoginAt().getTime(), is(parseTimeMillis(table.getValue(i, "last_login_at"))));
+                assertThat(user.getLogoutAt().getTime(), is(parseTimeMillis(table.getValue(i, "logout_at"))));
+                assertThat(user.getCreatedAt().getTime(), is(parseTimeMillis(table.getValue(i, "created_at"))));
+                assertThat(user.getCreatedUserId(), is(table.getValue(i, "created_user_id")));
+                assertThat(user.getUpdatedAt().getTime(), is(parseTimeMillis(table.getValue(i, "updated_at"))));
                 assertThat(user.getUpdatedUserId(), is(table.getValue(i, "updated_user_id")));
                 assertThat(user.getVersion(), is(Integer.valueOf((String) table.getValue(i, "version"))));
             }

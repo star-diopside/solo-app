@@ -35,9 +35,9 @@ public class User implements Serializable {
     private String password;
 
     /** パスワード更新日時 */
-    @Column(name = "password_updated_timestamp")
+    @Column(name = "password_updated_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date passwordUpdatedTimestamp;
+    private Date passwordUpdatedAt;
 
     /** 有効フラグ */
     private Boolean enabled;
@@ -51,33 +51,33 @@ public class User implements Serializable {
     private Integer loginErrorCount;
 
     /** ロックアウト日時 */
-    @Column(name = "lockout_timestamp")
+    @Column(name = "lockout_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date lockoutTimestamp;
+    private Date lockoutAt;
 
     /** 最終ログイン日時 */
-    @Column(name = "last_login_timestamp")
+    @Column(name = "last_login_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date lastLoginTimestamp;
+    private Date lastLoginAt;
 
     /** ログアウト日時 */
-    @Column(name = "logout_timestamp")
+    @Column(name = "logout_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date logoutTimestamp;
+    private Date logoutAt;
 
     /** 登録日時 */
-    @Column(name = "register_timestamp")
+    @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date registerTimestamp;
+    private Date createdAt;
 
     /** 登録ユーザID */
-    @Column(name = "register_user_id")
-    private String registerUserId;
+    @Column(name = "created_user_id")
+    private String createdUserId;
 
     /** 更新日時 */
-    @Column(name = "updated_timestamp")
+    @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedTimestamp;
+    private Date updatedAt;
 
     /** 更新ユーザID */
     @Column(name = "updated_user_id")
@@ -102,16 +102,16 @@ public class User implements Serializable {
         this.userId = user.userId;
         this.username = user.username;
         this.password = user.password;
-        this.passwordUpdatedTimestamp = user.passwordUpdatedTimestamp;
+        this.passwordUpdatedAt = user.passwordUpdatedAt;
         this.enabled = user.enabled;
         this.interimRegister = user.interimRegister;
         this.loginErrorCount = user.loginErrorCount;
-        this.lockoutTimestamp = user.lockoutTimestamp;
-        this.lastLoginTimestamp = user.lastLoginTimestamp;
-        this.logoutTimestamp = user.logoutTimestamp;
-        this.registerTimestamp = user.registerTimestamp;
-        this.registerUserId = user.registerUserId;
-        this.updatedTimestamp = user.updatedTimestamp;
+        this.lockoutAt = user.lockoutAt;
+        this.lastLoginAt = user.lastLoginAt;
+        this.logoutAt = user.logoutAt;
+        this.createdAt = user.createdAt;
+        this.createdUserId = user.createdUserId;
+        this.updatedAt = user.updatedAt;
         this.updatedUserId = user.updatedUserId;
         this.version = user.version;
     }
@@ -175,17 +175,17 @@ public class User implements Serializable {
      * 
      * @return パスワード更新日時
      */
-    public Date getPasswordUpdatedTimestamp() {
-        return passwordUpdatedTimestamp;
+    public Date getPasswordUpdatedAt() {
+        return passwordUpdatedAt;
     }
 
     /**
      * パスワード更新日時を設定する。
      * 
-     * @param passwordUpdatedTimestamp パスワード更新日時
+     * @param passwordUpdatedAt パスワード更新日時
      */
-    public void setPasswordUpdatedTimestamp(Date passwordUpdatedTimestamp) {
-        this.passwordUpdatedTimestamp = passwordUpdatedTimestamp;
+    public void setPasswordUpdatedAt(Date passwordUpdatedAt) {
+        this.passwordUpdatedAt = passwordUpdatedAt;
     }
 
     /**
@@ -247,17 +247,17 @@ public class User implements Serializable {
      * 
      * @return ロックアウト日時
      */
-    public Date getLockoutTimestamp() {
-        return lockoutTimestamp;
+    public Date getLockoutAt() {
+        return lockoutAt;
     }
 
     /**
      * ロックアウト日時を設定する。
      * 
-     * @param lockoutTimestamp ロックアウト日時
+     * @param lockoutAt ロックアウト日時
      */
-    public void setLockoutTimestamp(Date lockoutTimestamp) {
-        this.lockoutTimestamp = lockoutTimestamp;
+    public void setLockoutAt(Date lockoutAt) {
+        this.lockoutAt = lockoutAt;
     }
 
     /**
@@ -265,17 +265,17 @@ public class User implements Serializable {
      * 
      * @return 最終ログイン日時
      */
-    public Date getLastLoginTimestamp() {
-        return lastLoginTimestamp;
+    public Date getLastLoginAt() {
+        return lastLoginAt;
     }
 
     /**
      * 最終ログイン日時を設定する。
      * 
-     * @param lastLoginTimestamp 最終ログイン日時
+     * @param lastLoginAt 最終ログイン日時
      */
-    public void setLastLoginTimestamp(Date lastLoginTimestamp) {
-        this.lastLoginTimestamp = lastLoginTimestamp;
+    public void setLastLoginAt(Date lastLoginAt) {
+        this.lastLoginAt = lastLoginAt;
     }
 
     /**
@@ -283,17 +283,17 @@ public class User implements Serializable {
      * 
      * @return ログアウト日時
      */
-    public Date getLogoutTimestamp() {
-        return logoutTimestamp;
+    public Date getLogoutAt() {
+        return logoutAt;
     }
 
     /**
      * ログアウト日時を設定する。
      * 
-     * @param logoutTimestamp ログアウト日時
+     * @param logoutAt ログアウト日時
      */
-    public void setLogoutTimestamp(Date logoutTimestamp) {
-        this.logoutTimestamp = logoutTimestamp;
+    public void setLogoutAt(Date logoutAt) {
+        this.logoutAt = logoutAt;
     }
 
     /**
@@ -301,17 +301,17 @@ public class User implements Serializable {
      * 
      * @return 登録日時
      */
-    public Date getRegisterTimestamp() {
-        return registerTimestamp;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     /**
      * 登録日時を設定する。
      * 
-     * @param registerTimestamp 登録日時
+     * @param createdAt 登録日時
      */
-    public void setRegisterTimestamp(Date registerTimestamp) {
-        this.registerTimestamp = registerTimestamp;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     /**
@@ -319,17 +319,17 @@ public class User implements Serializable {
      * 
      * @return 登録ユーザID
      */
-    public String getRegisterUserId() {
-        return registerUserId;
+    public String getCreatedUserId() {
+        return createdUserId;
     }
 
     /**
      * 登録ユーザIDを設定する。
      * 
-     * @param registerUserId 登録ユーザID
+     * @param createdUserId 登録ユーザID
      */
-    public void setRegisterUserId(String registerUserId) {
-        this.registerUserId = registerUserId;
+    public void setCreatedUserId(String createdUserId) {
+        this.createdUserId = createdUserId;
     }
 
     /**
@@ -337,17 +337,17 @@ public class User implements Serializable {
      * 
      * @return 更新日時
      */
-    public Date getUpdatedTimestamp() {
-        return updatedTimestamp;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
     /**
      * 更新日時を設定する。
      * 
-     * @param updatedTimestamp 更新日時
+     * @param updatedAt 更新日時
      */
-    public void setUpdatedTimestamp(Date updatedTimestamp) {
-        this.updatedTimestamp = updatedTimestamp;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     /**

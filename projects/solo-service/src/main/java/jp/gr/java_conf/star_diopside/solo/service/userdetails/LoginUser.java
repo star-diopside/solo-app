@@ -1,5 +1,7 @@
 package jp.gr.java_conf.star_diopside.solo.service.userdetails;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Date;
 
@@ -17,6 +19,8 @@ public class LoginUser implements LoginUserDetails {
 
     private UserDetails _userDetails;
     private User _user;
+    private ZonedDateTime _lastLoginAt;
+    private ZonedDateTime _logoutAt;
 
     /**
      * コンストラクタ
@@ -27,6 +31,8 @@ public class LoginUser implements LoginUserDetails {
         _userDetails = new org.springframework.security.core.userdetails.User(user.getUserId(), user.getPassword(),
                 user.getEnabled(), true, true, true, AuthorityUtils.NO_AUTHORITIES);
         _user = new User(user);
+        _lastLoginAt = toZonedDateTime(user.getLastLoginAt());
+        _logoutAt = toZonedDateTime(user.getLogoutAt());
     }
 
     /**
@@ -85,13 +91,13 @@ public class LoginUser implements LoginUserDetails {
     }
 
     @Override
-    public Date getLastLoginTimestamp() {
-        return _user.getLastLoginTimestamp();
+    public ZonedDateTime getLastLoginAt() {
+        return _lastLoginAt;
     }
 
     @Override
-    public Date getLogoutTimestamp() {
-        return _user.getLogoutTimestamp();
+    public ZonedDateTime getLogoutAt() {
+        return _logoutAt;
     }
 
     @Override
@@ -105,5 +111,11 @@ public class LoginUser implements LoginUserDetails {
                 userDetails.getPassword(), userDetails.isEnabled(), userDetails.isAccountNonExpired(),
                 userDetails.isCredentialsNonExpired(), userDetails.isAccountNonLocked(), userDetails.getAuthorities());
         _user = new User(user);
+        _lastLoginAt = toZonedDateTime(user.getLastLoginAt());
+        _logoutAt = toZonedDateTime(user.getLogoutAt());
+    }
+
+    private static ZonedDateTime toZonedDateTime(Date date) {
+        return date == null ? null : ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 }

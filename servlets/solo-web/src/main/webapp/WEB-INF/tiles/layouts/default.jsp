@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="<spring:url value='/static/css/normalize.css'/>" type="text/css" media="screen,print"/>
+<link rel="stylesheet" href="<spring:url value='/static/css/layout.css'/>" type="text/css" media="screen,print"/>
 <link rel="stylesheet" href="<spring:url value='/static/css/style.css'/>" type="text/css" media="screen,print"/>
 <title><tiles:getAsString name="title"/></title>
 </head>

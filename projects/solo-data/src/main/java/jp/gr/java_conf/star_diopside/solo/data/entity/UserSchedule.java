@@ -17,22 +17,23 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * 権限エンティティクラス
+ * ユーザスケジュールエンティティクラス
  */
 @Entity
-@Table(name = "authorities")
-@IdClass(AuthorityPk.class)
+@Table(name = "user_schedule")
+@IdClass(UserSchedulePk.class)
 @SuppressWarnings("serial")
-public class Authority implements Serializable {
+public class UserSchedule implements Serializable {
 
     /** ユーザID */
     @Id
     @Column(name = "user_id")
     private String userId;
 
-    /** 権限 */
+    /** スケジュールID */
     @Id
-    private String authority;
+    @Column(name = "schedule_id")
+    private String scheduleId;
 
     /** 登録日時 */
     @Column(name = "created_at")
@@ -75,21 +76,21 @@ public class Authority implements Serializable {
     }
 
     /**
-     * 権限を取得する。
+     * スケジュールIDを取得する。
      * 
-     * @return 権限
+     * @return スケジュールID
      */
-    public String getAuthority() {
-        return authority;
+    public String getScheduleId() {
+        return scheduleId;
     }
 
     /**
-     * 権限を設定する。
+     * スケジュールIDを設定する。
      * 
-     * @param authority 権限
+     * @param scheduleId スケジュールID
      */
-    public void setAuthority(String authority) {
-        this.authority = authority;
+    public void setScheduleId(String scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     /**

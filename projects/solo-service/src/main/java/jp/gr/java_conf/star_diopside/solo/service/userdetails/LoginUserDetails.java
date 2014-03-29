@@ -1,6 +1,6 @@
 package jp.gr.java_conf.star_diopside.solo.service.userdetails;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 import jp.gr.java_conf.star_diopside.solo.data.entity.User;
 
@@ -30,14 +30,14 @@ public interface LoginUserDetails extends UserDetails {
      * 
      * @return 最終ログイン日時
      */
-    Date getLastLoginTimestamp();
+    ZonedDateTime getLastLoginAt();
 
     /**
      * ログアウト日時を取得する。
      * 
      * @return ログアウト日時
      */
-    Date getLogoutTimestamp();
+    ZonedDateTime getLogoutAt();
 
     /**
      * ユーザエンティティに変換する。

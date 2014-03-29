@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,22 +16,25 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * 権限エンティティクラス
+ * スケジュールエンティティクラス
  */
 @Entity
-@Table(name = "authorities")
-@IdClass(AuthorityPk.class)
+@Table(name = "schedules")
 @SuppressWarnings("serial")
-public class Authority implements Serializable {
+public class Schedule implements Serializable {
 
-    /** ユーザID */
+    /** スケジュールID */
     @Id
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "schedule_id")
+    private String scheduleId;
 
-    /** 権限 */
-    @Id
-    private String authority;
+    /** スケジュール日時 */
+    @Column(name = "scheduled_on")
+    @Temporal(TemporalType.DATE)
+    private Date scheduledOn;
+
+    /** 説明 */
+    private String description;
 
     /** 登録日時 */
     @Column(name = "created_at")
@@ -57,39 +59,57 @@ public class Authority implements Serializable {
     private Integer version;
 
     /**
-     * ユーザIDを取得する。
+     * スケジュールIDを取得する。
      * 
-     * @return ユーザID
+     * @return スケジュールID
      */
-    public String getUserId() {
-        return userId;
+    public String getScheduleId() {
+        return scheduleId;
     }
 
     /**
-     * ユーザIDを設定する。
+     * スケジュールIDを設定する。
      * 
-     * @param userId ユーザID
+     * @param scheduleId スケジュールID
      */
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setScheduleId(String scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     /**
-     * 権限を取得する。
+     * スケジュール日時を取得する。
      * 
-     * @return 権限
+     * @return スケジュール日時
      */
-    public String getAuthority() {
-        return authority;
+    public Date getScheduledOn() {
+        return scheduledOn;
     }
 
     /**
-     * 権限を設定する。
+     * スケジュール日時を設定する。
      * 
-     * @param authority 権限
+     * @param scheduledOn スケジュール日時
      */
-    public void setAuthority(String authority) {
-        this.authority = authority;
+    public void setScheduledOn(Date scheduledOn) {
+        this.scheduledOn = scheduledOn;
+    }
+
+    /**
+     * 説明を取得する。
+     * 
+     * @return 説明
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * 説明を設定する。
+     * 
+     * @param description 説明
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
