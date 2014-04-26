@@ -13,16 +13,4 @@
               validationQuery="select 1"
               initSQL="SET statement_timeout = 30000" />
 
-    <Resource name="jdbc/session-store"
-              auth="Container"
-              type="javax.sql.DataSource"
-              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-              username="solo"
-              password="solo"
-              driverClassName="org.postgresql.Driver"
-              url="jdbc:postgresql://localhost:5432/session-store"
-              testOnBorrow="true"
-              validationQuery="select 1"
-              initSQL="SET statement_timeout = 30000" />
-
 </Context>
