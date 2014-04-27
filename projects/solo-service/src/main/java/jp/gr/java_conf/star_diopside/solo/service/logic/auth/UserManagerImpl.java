@@ -9,6 +9,7 @@ import jp.gr.java_conf.star_diopside.solo.data.entity.Authority;
 import jp.gr.java_conf.star_diopside.solo.data.entity.User;
 import jp.gr.java_conf.star_diopside.solo.data.repository.AuthorityRepository;
 import jp.gr.java_conf.star_diopside.solo.data.repository.UserRepository;
+import jp.gr.java_conf.star_diopside.solo.data.repository.UserScheduleRepository;
 import jp.gr.java_conf.star_diopside.solo.service.userdetails.LoginUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class UserManagerImpl implements UserManager {
 
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private UserScheduleRepository userScheduleRepository;
 
     @Autowired
     @Qualifier("messages")
@@ -106,6 +110,7 @@ public class UserManagerImpl implements UserManager {
 
         // 無効ユーザの削除を行う
         if (!valid) {
+            userScheduleRepository.deleteByUserId(user.getUserId());
             authorityRepository.deleteByUserId(user.getUserId());
             userRepository.delete(user);
             throw new AccountExpiredException(messages.getMessage("Error.UserInvalid"));

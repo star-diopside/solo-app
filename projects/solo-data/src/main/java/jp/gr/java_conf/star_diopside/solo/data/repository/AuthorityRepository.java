@@ -3,7 +3,7 @@ package jp.gr.java_conf.star_diopside.solo.data.repository;
 import java.util.List;
 
 import jp.gr.java_conf.star_diopside.solo.data.entity.Authority;
-import jp.gr.java_conf.star_diopside.solo.data.entity.AuthorityPk;
+import jp.gr.java_conf.star_diopside.solo.data.entity.AuthorityId;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 /**
  * 権限リポジトリインタフェース
  */
-public interface AuthorityRepository extends JpaRepository<Authority, AuthorityPk> {
+public interface AuthorityRepository extends JpaRepository<Authority, AuthorityId> {
 
     /**
      * ユーザIDを条件に権限情報を検索する。

@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,7 +23,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 @Entity
 @Table(name = "authorities")
-@IdClass(AuthorityPk.class)
+@IdClass(AuthorityId.class)
 @SuppressWarnings("serial")
 public class Authority implements Serializable {
 
@@ -55,6 +57,11 @@ public class Authority implements Serializable {
     /** バージョン */
     @Version
     private Integer version;
+
+    /** ユーザエンティティ */
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
 
     /**
      * ユーザIDを取得する。
@@ -180,6 +187,24 @@ public class Authority implements Serializable {
      */
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    /**
+     * ユーザエンティティを取得する。
+     * 
+     * @return
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * ユーザエンティティを設定する。
+     * 
+     * @param user
+     */
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

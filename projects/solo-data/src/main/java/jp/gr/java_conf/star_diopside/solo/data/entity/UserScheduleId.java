@@ -7,16 +7,16 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * 権限主キークラス
+ * ユーザスケジュールエンティティクラス
  */
 @SuppressWarnings("serial")
-public class AuthorityPk implements Serializable {
+public class UserScheduleId implements Serializable {
 
     /** ユーザID */
     private String userId;
 
-    /** 権限 */
-    private String authority;
+    /** スケジュールID */
+    private String scheduleId;
 
     /**
      * ユーザIDを取得する。
@@ -37,21 +37,21 @@ public class AuthorityPk implements Serializable {
     }
 
     /**
-     * 権限を取得する。
+     * スケジュールIDを取得する。
      * 
-     * @return 権限
+     * @return スケジュールID
      */
-    public String getAuthority() {
-        return authority;
+    public String getScheduleId() {
+        return scheduleId;
     }
 
     /**
-     * 権限を設定する。
+     * スケジュールIDを設定する。
      * 
-     * @param authority 権限
+     * @param scheduleId スケジュールID
      */
-    public void setAuthority(String authority) {
-        this.authority = authority;
+    public void setScheduleId(String scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     @Override

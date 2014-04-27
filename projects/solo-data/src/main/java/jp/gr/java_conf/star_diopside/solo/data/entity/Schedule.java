@@ -2,10 +2,12 @@ package jp.gr.java_conf.star_diopside.solo.data.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -57,6 +59,10 @@ public class Schedule implements Serializable {
     /** バージョン */
     @Version
     private Integer version;
+
+    /** ユーザスケジュールエンティティ一覧 */
+    @OneToMany(mappedBy = "schedule")
+    private List<UserSchedule> userSchedules;
 
     /**
      * スケジュールIDを取得する。
@@ -200,6 +206,24 @@ public class Schedule implements Serializable {
      */
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    /**
+     * ユーザスケジュールエンティティ一覧を取得する。
+     * 
+     * @return
+     */
+    public List<UserSchedule> getUserSchedules() {
+        return userSchedules;
+    }
+
+    /**
+     * ユーザスケジュールエンティティ一覧を設定する。
+     * 
+     * @param userSchedules
+     */
+    public void setUserSchedules(List<UserSchedule> userSchedules) {
+        this.userSchedules = userSchedules;
     }
 
     @Override

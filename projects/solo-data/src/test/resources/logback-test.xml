@@ -48,6 +48,10 @@
         <appender-ref ref="traceLog" />
     </logger>
 
+    <logger name="org.hibernate.SQL" level="TRACE">
+        <appender-ref ref="traceLog" />
+    </logger>
+
     <!-- Root Logger Setting -->
     <root level="ERROR">
         <appender-ref ref="errorLog" />

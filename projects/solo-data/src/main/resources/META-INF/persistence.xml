@@ -6,7 +6,9 @@
 
     <persistence-unit name="default">
         <class>jp.gr.java_conf.star_diopside.solo.data.entity.Authority</class>
+        <class>jp.gr.java_conf.star_diopside.solo.data.entity.Schedule</class>
         <class>jp.gr.java_conf.star_diopside.solo.data.entity.User</class>
+        <class>jp.gr.java_conf.star_diopside.solo.data.entity.UserSchedule</class>
     </persistence-unit>
 
 </persistence>
