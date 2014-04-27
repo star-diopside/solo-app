@@ -18,7 +18,7 @@
 
     <aop:config>
         <aop:advisor advice-ref="txAdvice"
-            pointcut="execution(org.springframework.security.core.userdetails.UserDetails org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl.loadUserByUsername(java.lang.String))" />
+            pointcut="target(org.springframework.security.authentication.dao.DaoAuthenticationProvider) &amp;&amp; execution(* org.springframework.security.authentication.AuthenticationProvider.authenticate(org.springframework.security.core.Authentication)))" />
     </aop:config>
 
 </beans>
