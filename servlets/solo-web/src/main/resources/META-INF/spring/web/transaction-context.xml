@@ -10,15 +10,15 @@
 
     <tx:annotation-driven transaction-manager="transactionManager" />
 
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <tx:advice id="authenticationTransactionAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <tx:method name="*" />
+            <tx:method name="*" no-rollback-for="org.springframework.security.core.AuthenticationException" />
         </tx:attributes>
     </tx:advice>
 
     <aop:config>
-        <aop:advisor advice-ref="txAdvice"
-            pointcut="target(org.springframework.security.authentication.dao.DaoAuthenticationProvider) &amp;&amp; execution(* org.springframework.security.authentication.AuthenticationProvider.authenticate(org.springframework.security.core.Authentication)))" />
+        <aop:advisor advice-ref="authenticationTransactionAdvice"
+            pointcut="target(org.springframework.security.authentication.dao.DaoAuthenticationProvider) &amp;&amp; execution(* org.springframework.security.authentication.AuthenticationProvider.authenticate(org.springframework.security.core.Authentication))" />
     </aop:config>
 
 </beans>
