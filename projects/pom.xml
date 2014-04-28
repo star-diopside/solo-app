@@ -21,6 +21,8 @@
         <module>solo-data</module>
         <module>solo-service</module>
         <module>solo-web-controller</module>
+        <module>solo-batch</module>
+        <module>solo-batch-runner</module>
         <module>solo-test-support</module>
     </modules>
 

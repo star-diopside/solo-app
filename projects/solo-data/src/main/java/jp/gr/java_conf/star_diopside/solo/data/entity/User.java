@@ -124,6 +124,8 @@ public class User implements Serializable {
         this.updatedAt = user.updatedAt;
         this.updatedUserId = user.updatedUserId;
         this.version = user.version;
+        this.authorities = user.authorities;
+        this.userSchedules = user.userSchedules;
     }
 
     /**

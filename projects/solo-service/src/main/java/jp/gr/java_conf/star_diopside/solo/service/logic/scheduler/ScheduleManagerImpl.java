@@ -1,6 +1,6 @@
 package jp.gr.java_conf.star_diopside.solo.service.logic.scheduler;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -30,7 +30,7 @@ public class ScheduleManagerImpl implements ScheduleManager {
     public void create(String userId, Schedule schedule) {
 
         Date current = new Date();
-        String today = LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE);
+        String today = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
         int nextNumber = 1;
 
         String maxScheduleId = scheduleRepository.findMaxScheduleIdByScheduleIdLike(today + "%");

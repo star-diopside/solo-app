@@ -1,8 +1,7 @@
 package jp.gr.java_conf.star_diopside.solo.service.logic.auth;
 
+import jp.gr.java_conf.star_diopside.solo.data.entity.User;
 import jp.gr.java_conf.star_diopside.solo.service.userdetails.LoginUserDetails;
-
-import org.springframework.security.core.AuthenticationException;
 
 /**
  * ユーザ管理インタフェース
@@ -21,10 +20,25 @@ public interface UserManager {
     /**
      * 取得したユーザ情報が有効かどうか判定する。
      * 
-     * @param loginUser ユーザ情報
-     * @throws AuthenticationException 無効なユーザ情報と判定した場合
+     * @param user ユーザエンティティ
+     * @return 有効なユーザ情報と判定した場合はtrue、無効なユーザと判定した場合はfalse
      */
-    void checkValid(LoginUserDetails loginUser) throws AuthenticationException;
+    boolean checkValid(User user);
+
+    /**
+     * ユーザを削除する。
+     * 
+     * @param user ユーザエンティティ
+     */
+    void removeUser(User user);
+
+    /**
+     * ユーザ状態を判定し、無効ユーザの場合は削除する。
+     * 
+     * @param loginUser ユーザ情報
+     * @return 無効なユーザと判定して削除した場合はtrue、それ以外の場合はfalse
+     */
+    boolean removeInvalidUser(LoginUserDetails loginUser);
 
     /**
      * ログイン成功時の処理を行う。

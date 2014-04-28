@@ -14,9 +14,6 @@ import jp.gr.java_conf.star_diopside.solo.service.userdetails.LoginUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.security.authentication.AccountExpiredException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,10 +32,6 @@ public class UserManagerImpl implements UserManager {
 
     @Autowired
     private UserScheduleRepository userScheduleRepository;
-
-    @Autowired
-    @Qualifier("messages")
-    private MessageSourceAccessor messages;
 
     @Autowired
     @Qualifier("passwordEncoder")
@@ -90,31 +83,42 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    @Transactional(noRollbackFor = AuthenticationException.class)
-    public void checkValid(LoginUserDetails loginUser) throws AuthenticationException {
+    public boolean checkValid(User user) {
+
+        // ユーザの有効チェックを行う
+        if (Boolean.FALSE.equals(user.getInterimRegister())) {
+            // 本登録済みの場合、有効ユーザとする。
+            return true;
+        } else {
+            // 仮登録中の場合、登録後１日経過すると無効ユーザとする。
+            long duration = System.currentTimeMillis() - user.getCreatedAt().getTime();
+            return duration <= TimeUnit.DAYS.toMillis(1);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeUser(User user) {
+
+        user.getUserSchedules().forEach(userSchedule -> userScheduleRepository.delete(userSchedule));
+        user.getAuthorities().forEach(authority -> authorityRepository.delete(authority));
+        userRepository.delete(user);
+    }
+
+    @Override
+    @Transactional
+    public boolean removeInvalidUser(LoginUserDetails loginUser) {
 
         // ユーザ情報を取得する。
         User user = loginUser.convertUserEntity();
 
-        // ユーザの有効チェックを行う
-        boolean valid;
-
-        if (Boolean.FALSE.equals(user.getInterimRegister())) {
-            // 本登録済みの場合、有効ユーザとする。
-            valid = true;
-        } else {
-            // 仮登録中の場合、登録後１日経過すると無効ユーザとする。
-            long duration = System.currentTimeMillis() - user.getCreatedAt().getTime();
-            valid = (duration <= TimeUnit.DAYS.toMillis(1));
+        // 無効ユーザの場合、削除を行う
+        if (!checkValid(user)) {
+            removeUser(user);
+            return true;
         }
 
-        // 無効ユーザの削除を行う
-        if (!valid) {
-            userScheduleRepository.deleteByUserId(user.getUserId());
-            authorityRepository.deleteByUserId(user.getUserId());
-            userRepository.delete(user);
-            throw new AccountExpiredException(messages.getMessage("Error.UserInvalid"));
-        }
+        return false;
     }
 
     @Override
