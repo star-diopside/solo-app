@@ -1,8 +1,8 @@
 package jp.gr.java_conf.star_diopside.solo.test.util;
 
-import java.io.File;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import jp.gr.java_conf.star_diopside.solo.test.exception.TestException;
 
@@ -18,15 +18,21 @@ public final class TestUtils {
      * テストデータディレクトリを取得する。
      * 
      * @param tester テストクラスのインスタンス
-     * @return テストデータを格納するディレクトリ
+     * @return テストデータを格納するディレクトリパス
      */
-    public static File findTestDataDir(Object tester) {
+    public static Path findTestDataDir(Object tester) {
+        return findTestDataDir(tester.getClass());
+    }
 
-        Class<?> clazz = tester.getClass();
-        URL url = clazz.getResource(clazz.getSimpleName() + "-data");
-
+    /**
+     * テストデータディレクトリを取得する。
+     * 
+     * @param testerClass テストクラス
+     * @return テストデータを格納するディレクトリパス
+     */
+    public static Path findTestDataDir(Class<?> testerClass) {
         try {
-            return new File(url.toURI());
+            return Paths.get(testerClass.getResource(testerClass.getSimpleName() + "-data").toURI());
         } catch (URISyntaxException e) {
             throw new TestException(e);
         }
@@ -37,9 +43,20 @@ public final class TestUtils {
      * 
      * @param tester テストクラスのインスタンス
      * @param path テストファイルパス (テストデータディレクトリからの相対パス)
-     * @return テストデータファイル
+     * @return テストデータファイルパス
      */
-    public static File findTestDataFile(Object tester, String path) {
-        return new File(findTestDataDir(tester), path);
+    public static Path findTestDataFile(Object tester, String path) {
+        return findTestDataFile(tester.getClass(), path);
+    }
+
+    /**
+     * テストデータファイルを取得する。
+     * 
+     * @param testerClass テストクラス
+     * @param path テストファイルパス (テストデータディレクトリからの相対パス)
+     * @return テストデータファイルパス
+     */
+    public static Path findTestDataFile(Class<?> testerClass, String path) {
+        return findTestDataDir(testerClass).resolve(path);
     }
 }

@@ -42,7 +42,7 @@ public class UserRepositoryTest {
     @Before
     public void before() {
         databaseTestSupport = new DatabaseTestSupport(this, dataSource);
-        databaseTestSupport.setFlatXmlDataSet("dataset.xml");
+        databaseTestSupport.setCsvDataSet("dataset");
         databaseTestSupport.onSetup();
     }
 

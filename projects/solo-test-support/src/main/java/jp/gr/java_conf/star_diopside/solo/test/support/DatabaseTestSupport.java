@@ -1,15 +1,19 @@
 package jp.gr.java_conf.star_diopside.solo.test.support;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 
 import javax.sql.DataSource;
 
+import jp.gr.java_conf.star_diopside.solo.test.dataset.csv.CsvProducerEx;
 import jp.gr.java_conf.star_diopside.solo.test.exception.TestException;
 import jp.gr.java_conf.star_diopside.solo.test.util.TestUtils;
 
 import org.dbunit.DataSourceDatabaseTester;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -60,8 +64,23 @@ public class DatabaseTestSupport {
 
         try {
             FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-            dataSet = builder.build(TestUtils.findTestDataFile(tester, testFile));
-        } catch (MalformedURLException | DataSetException e) {
+            dataSet = builder.build(Files.newInputStream(TestUtils.findTestDataFile(tester, testFile)));
+        } catch (DataSetException | IOException e) {
+            throw new TestException(e);
+        }
+    }
+
+    /**
+     * CSVデータセットを設定する。
+     * 
+     * @param testFile テストデータディレクトリ名
+     */
+    public void setCsvDataSet(String testDirectory) {
+
+        try {
+            dataSet = new CachedDataSet(new CsvProducerEx(TestUtils.findTestDataFile(tester, testDirectory),
+                    Charset.forName("UTF-8")));
+        } catch (DataSetException e) {
             throw new TestException(e);
         }
     }
