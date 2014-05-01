@@ -12,6 +12,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <project.rootdir>${project.basedir}/../..</project.rootdir>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>jp.gr.java_conf.star_diopside.solo</groupId>

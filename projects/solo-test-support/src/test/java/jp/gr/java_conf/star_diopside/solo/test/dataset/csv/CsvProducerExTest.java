@@ -29,7 +29,7 @@ public class CsvProducerExTest {
         producer.setConsumer(consumer);
         producer.produce();
         final ITable[] tables = consumer.getTables();
-        assertEquals("expected 2 tables", 2, tables.length);
+        assertThat("expected 2 tables", tables, arrayWithSize(2));
 
         final ITable orders = consumer.getTable("orders");
         assertThat("orders table not found", orders, is(notNullValue()));

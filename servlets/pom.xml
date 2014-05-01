@@ -17,6 +17,10 @@
         <module>solo-web</module>
     </modules>
 
+    <properties>
+        <project.rootdir>${project.basedir}/..</project.rootdir>
+    </properties>
+
     <build>
         <pluginManagement>
             <plugins>

@@ -26,4 +26,8 @@
         <module>solo-test-support</module>
     </modules>
 
+    <properties>
+        <project.rootdir>${project.basedir}/..</project.rootdir>
+    </properties>
+
 </project>

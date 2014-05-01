@@ -192,7 +192,7 @@ public class Authority implements Serializable {
     /**
      * ユーザエンティティを取得する。
      * 
-     * @return
+     * @return ユーザエンティティ
      */
     public User getUser() {
         return user;
@@ -201,7 +201,7 @@ public class Authority implements Serializable {
     /**
      * ユーザエンティティを設定する。
      * 
-     * @param user
+     * @param user ユーザエンティティ
      */
     public void setUser(User user) {
         this.user = user;

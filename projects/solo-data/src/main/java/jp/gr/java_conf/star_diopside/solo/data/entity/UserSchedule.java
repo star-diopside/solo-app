@@ -198,7 +198,7 @@ public class UserSchedule implements Serializable {
     /**
      * ユーザエンティティを取得する。
      * 
-     * @return
+     * @return ユーザエンティティ
      */
     public User getUser() {
         return user;
@@ -207,7 +207,7 @@ public class UserSchedule implements Serializable {
     /**
      * ユーザエンティティを設定する。
      * 
-     * @param user
+     * @param user ユーザエンティティ
      */
     public void setUser(User user) {
         this.user = user;
@@ -216,7 +216,7 @@ public class UserSchedule implements Serializable {
     /**
      * スケジュールエンティティを取得する。
      * 
-     * @return
+     * @return スケジュールエンティティ
      */
     public Schedule getSchedule() {
         return schedule;
@@ -225,7 +225,7 @@ public class UserSchedule implements Serializable {
     /**
      * スケジュールエンティティを設定する。
      * 
-     * @param schedule
+     * @param schedule スケジュールエンティティ
      */
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;

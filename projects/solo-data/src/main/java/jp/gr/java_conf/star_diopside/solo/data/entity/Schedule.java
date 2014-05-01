@@ -211,7 +211,7 @@ public class Schedule implements Serializable {
     /**
      * ユーザスケジュールエンティティ一覧を取得する。
      * 
-     * @return
+     * @return ユーザスケジュールエンティティ一覧
      */
     public List<UserSchedule> getUserSchedules() {
         return userSchedules;
@@ -220,7 +220,7 @@ public class Schedule implements Serializable {
     /**
      * ユーザスケジュールエンティティ一覧を設定する。
      * 
-     * @param userSchedules
+     * @param userSchedules ユーザスケジュールエンティティ一覧
      */
     public void setUserSchedules(List<UserSchedule> userSchedules) {
         this.userSchedules = userSchedules;

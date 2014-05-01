@@ -73,7 +73,7 @@ public class DatabaseTestSupport {
     /**
      * CSVデータセットを設定する。
      * 
-     * @param testFile テストデータディレクトリ名
+     * @param testDirectory テストデータディレクトリ名
      */
     public void setCsvDataSet(String testDirectory) {
 

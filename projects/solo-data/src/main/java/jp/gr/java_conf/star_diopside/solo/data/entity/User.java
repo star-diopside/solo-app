@@ -401,7 +401,7 @@ public class User implements Serializable {
     /**
      * 権限エンティティ一覧を取得する。
      * 
-     * @return
+     * @return 権限エンティティ一覧
      */
     public List<Authority> getAuthorities() {
         return authorities;
@@ -410,7 +410,7 @@ public class User implements Serializable {
     /**
      * 権限エンティティ一覧を設定する。
      * 
-     * @param authorities
+     * @param authorities 権限エンティティ一覧
      */
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
@@ -419,7 +419,7 @@ public class User implements Serializable {
     /**
      * ユーザスケジュールエンティティ一覧を取得する。
      * 
-     * @return
+     * @return ユーザスケジュールエンティティ一覧
      */
     public List<UserSchedule> getUserSchedules() {
         return userSchedules;
@@ -428,7 +428,7 @@ public class User implements Serializable {
     /**
      * ユーザスケジュールエンティティ一覧を設定する。
      * 
-     * @param userSchedules
+     * @param userSchedules ユーザスケジュールエンティティ一覧
      */
     public void setUserSchedules(List<UserSchedule> userSchedules) {
         this.userSchedules = userSchedules;

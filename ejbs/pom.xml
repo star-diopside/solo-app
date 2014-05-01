@@ -13,4 +13,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <project.rootdir>${project.basedir}/..</project.rootdir>
+    </properties>
+
 </project>
