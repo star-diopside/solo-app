@@ -20,6 +20,7 @@
         <project.rootdir>${project.basedir}</project.rootdir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <jacoco.version>0.7.0.201403182114</jacoco.version>
         <slf4j.version>1.7.7</slf4j.version>
         <logback.version>1.1.2</logback.version>
         <spring.version>4.0.3.RELEASE</spring.version>
@@ -223,7 +224,31 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.7.0.201403182114</version>
+                    <version>${jacoco.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.jacoco</groupId>
+                                        <artifactId>jacoco-maven-plugin</artifactId>
+                                        <versionRange>${jacoco.version}</versionRange>
+                                        <goals>
+                                            <goal>prepare-agent</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -531,6 +556,11 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>9.3-1101-jdbc41</version>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>1.4.178</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

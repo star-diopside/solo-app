@@ -15,7 +15,6 @@
     <bean id="logging" class="jp.gr.java_conf.star_diopside.solo.core.interceptor.CustomLoggingInterceptor" />
 
     <aop:config>
-        <aop:advisor advice-ref="logging" pointcut="execution(* jp.gr.java_conf.star_diopside.common..*(..))" />
         <aop:advisor advice-ref="logging" pointcut="execution(* jp.gr.java_conf.star_diopside.solo..*(..))" />
     </aop:config>
 

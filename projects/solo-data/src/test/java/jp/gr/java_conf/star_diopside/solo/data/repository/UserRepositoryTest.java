@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 import jp.gr.java_conf.star_diopside.solo.data.entity.User;
 import jp.gr.java_conf.star_diopside.solo.test.support.DatabaseTestSupport;
+import jp.gr.java_conf.star_diopside.solo.test.support.SimpleDatabaseTestSupport;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dbunit.dataset.DataSetException;
@@ -31,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserRepositoryTest {
 
-    @Resource
+    @Resource(name = "dbunitDataSource")
     private DataSource dataSource;
 
     @Autowired
@@ -41,7 +42,7 @@ public class UserRepositoryTest {
 
     @Before
     public void before() {
-        databaseTestSupport = new DatabaseTestSupport(this, dataSource);
+        databaseTestSupport = new SimpleDatabaseTestSupport(this, dataSource);
         databaseTestSupport.setCsvDataSet("dataset");
         databaseTestSupport.onSetup();
     }

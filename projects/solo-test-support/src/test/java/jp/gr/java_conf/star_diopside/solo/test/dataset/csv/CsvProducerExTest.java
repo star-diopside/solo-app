@@ -3,7 +3,7 @@ package jp.gr.java_conf.star_diopside.solo.test.dataset.csv;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 import jp.gr.java_conf.star_diopside.solo.test.util.TestUtils;
@@ -23,7 +23,7 @@ public class CsvProducerExTest {
 
     @Test
     public void testProduceFromFolder() throws DataSetException {
-        CsvProducerEx producer = new CsvProducerEx(THE_DIRECTORY, Charset.forName("UTF-8"));
+        CsvProducerEx producer = new CsvProducerEx(THE_DIRECTORY, StandardCharsets.UTF_8);
         CachedDataSet consumer = new CachedDataSet();
 
         producer.setConsumer(consumer);

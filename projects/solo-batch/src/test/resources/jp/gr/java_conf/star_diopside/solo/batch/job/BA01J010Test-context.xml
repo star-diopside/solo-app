@@ -5,6 +5,11 @@
 
     <import resource="classpath:/META-INF/spring/batch/batch-context.xml" />
     <import resource="classpath:/META-INF/spring/batch-jobs/BA01J010-context.xml" />
-    <import resource="classpath:/META-INF/spring/batch-runner/data-source-context.xml" />
+    <import resource="classpath:/META-INF/spring/test/data-source-context.xml" />
+    <import resource="classpath:/META-INF/spring/batch-test/job-data-source-context.xml" />
+
+    <bean class="org.springframework.batch.test.JobLauncherTestUtils">
+        <property name="job" ref="BA01J010" />
+    </bean>
 
 </beans>
