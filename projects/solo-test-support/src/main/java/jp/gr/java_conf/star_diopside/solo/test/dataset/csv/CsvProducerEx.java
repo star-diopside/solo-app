@@ -27,7 +27,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.dbunit.dataset.Column;
@@ -40,7 +40,6 @@ import org.dbunit.dataset.csv.CsvDataSet;
 import org.dbunit.dataset.csv.CsvDataSetWriter;
 import org.dbunit.dataset.csv.CsvParserException;
 import org.dbunit.dataset.csv.CsvParserImpl;
-import org.dbunit.dataset.csv.CsvProducer;
 import org.dbunit.dataset.datatype.DataType;
 import org.dbunit.dataset.stream.DefaultConsumer;
 import org.dbunit.dataset.stream.IDataSetConsumer;
@@ -50,7 +49,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Fork {@link CsvDataSet} from DbUnit version 2.5.0
- * 
  * @author Federico Spinazzi
  * @author Last changed by: $Author$
  * @version $Revision$ $Date$
@@ -95,9 +93,8 @@ public class CsvProducerEx implements IDataSetProducer {
 
         _consumer.startDataSet();
         try {
-            List<?> tableSpecs = CsvProducer.getTables(dir.toUri().toURL(), CsvDataSet.TABLE_ORDERING_FILE);
-            for (Iterator<?> tableIter = tableSpecs.iterator(); tableIter.hasNext();) {
-                String table = (String) tableIter.next();
+            List<String> tableSpecs = CsvProducerEx.getTables(dir, CsvDataSet.TABLE_ORDERING_FILE, _charset);
+            for (String table : tableSpecs) {
                 try {
                     produceFromFile(dir.resolve(table + ".csv"));
                 } catch (CsvParserException e) {
@@ -152,4 +149,26 @@ public class CsvProducerEx implements IDataSetProducer {
             throw new DataSetException(e);
         }
     }
+
+    /**
+     * Get a list of tables that this producer will create
+     * @return a list of Strings, where each item is a CSV file relative to the base URL
+     * @throws IOException when IO on the base URL has issues.
+     */
+    public static List<String> getTables(Path base, String tableList, Charset charset) throws IOException {
+        logger.debug("getTables(base={}, tableList={}) - start", base, tableList);
+
+        List<String> orderedNames = new ArrayList<String>();
+        try (BufferedReader reader = Files.newBufferedReader(base.resolve(tableList), charset)) {
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                String table = line.trim();
+                if (table.length() > 0) {
+                    orderedNames.add(table);
+                }
+            }
+        }
+        return orderedNames;
+    }
+
 }
