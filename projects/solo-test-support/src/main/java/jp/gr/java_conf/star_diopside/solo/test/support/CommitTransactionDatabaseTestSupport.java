@@ -12,7 +12,9 @@ import org.dbunit.dataset.CachedDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -21,8 +23,8 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 public class CommitTransactionDatabaseTestSupport extends AbstractDatabaseTestSupport {
 
-    /** トランザクションマネージャ */
-    private PlatformTransactionManager transactionManager;
+    /** トランザクションテンプレート */
+    private TransactionTemplate transactionTemplate;
 
     /** バックアップデータセット */
     private IDataSet backupDataSet;
@@ -37,13 +39,13 @@ public class CommitTransactionDatabaseTestSupport extends AbstractDatabaseTestSu
     public CommitTransactionDatabaseTestSupport(Object tester, DataSource dataSource,
             PlatformTransactionManager transactionManager) {
         super(tester, dataSource);
-        this.transactionManager = transactionManager;
+        this.transactionTemplate = new TransactionTemplate(transactionManager, new DefaultTransactionDefinition(
+                TransactionDefinition.PROPAGATION_REQUIRES_NEW));
     }
 
     @Override
     public void onSetup() {
-        TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.execute(new TransactionCallbackWithoutResult() {
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
@@ -60,8 +62,7 @@ public class CommitTransactionDatabaseTestSupport extends AbstractDatabaseTestSu
 
     @Override
     public void onTearDown() {
-        TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.execute(new TransactionCallbackWithoutResult() {
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
