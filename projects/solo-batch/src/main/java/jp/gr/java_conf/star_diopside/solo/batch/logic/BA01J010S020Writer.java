@@ -8,7 +8,7 @@ import jp.gr.java_conf.star_diopside.solo.service.logic.auth.UserManager;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class BA01J010S010Writer implements ItemWriter<User> {
+public class BA01J010S020Writer implements ItemWriter<User> {
 
     @Autowired
     private UserManager userManager;

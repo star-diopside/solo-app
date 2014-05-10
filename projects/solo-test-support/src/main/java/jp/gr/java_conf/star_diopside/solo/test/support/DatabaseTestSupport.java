@@ -1,5 +1,7 @@
 package jp.gr.java_conf.star_diopside.solo.test.support;
 
+import java.util.Map;
+
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
@@ -14,6 +16,20 @@ public interface DatabaseTestSupport {
      * @return テストデータセット
      */
     IDataSet getDataSet();
+
+    /**
+     * オブジェクト置換マップを設定する。
+     * 
+     * @param replacementObjectMap オブジェクト置換マップ
+     */
+    void setReplacementObjectMap(Map<?, ?> replacementObjectMap);
+
+    /**
+     * 文字列置換マップを設定する。
+     * 
+     * @param replacementSubstringMap 文字列置換マップ
+     */
+    void setReplacementSubstringMap(Map<String, String> replacementSubstringMap);
 
     /**
      * フラットXMLデータセットを設定する。

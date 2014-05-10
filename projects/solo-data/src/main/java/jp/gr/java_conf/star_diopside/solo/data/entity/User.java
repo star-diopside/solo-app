@@ -13,7 +13,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
-import jp.gr.java_conf.star_diopside.solo.core.exception.SystemException;
 import lombok.Data;
 import lombok.ToString;
 
@@ -104,7 +103,7 @@ public class User implements Serializable, Cloneable {
         try {
             return (User) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new SystemException(e);
+            throw new UnsupportedOperationException(e);
         }
     }
 }

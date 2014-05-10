@@ -1,23 +1,20 @@
 package jp.gr.java_conf.star_diopside.solo.test.support;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
-import jp.gr.java_conf.star_diopside.solo.test.dataset.csv.CsvProducerEx;
 import jp.gr.java_conf.star_diopside.solo.test.exception.TestException;
+import jp.gr.java_conf.star_diopside.solo.test.util.DataSetUtils;
 import jp.gr.java_conf.star_diopside.solo.test.util.TestUtils;
 
+import org.apache.commons.collections4.MapUtils;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.CachedDataSet;
-import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.dataset.ReplacementDataSet;
 
 /**
  * データベースを使用するテストをサポートする機能のベースを実装する抽象クラス
@@ -32,6 +29,12 @@ public abstract class AbstractDatabaseTestSupport implements DatabaseTestSupport
 
     /** テストデータセット */
     private IDataSet dataSet;
+
+    /** オブジェクト置換マップ */
+    private Map<?, ?> replacementObjectMap;
+
+    /** 文字列置換マップ */
+    private Map<String, String> replacementSubstringMap;
 
     /**
      * コンストラクタ
@@ -55,27 +58,33 @@ public abstract class AbstractDatabaseTestSupport implements DatabaseTestSupport
 
     @Override
     public IDataSet getDataSet() {
-        return dataSet;
+        if (dataSet == null) {
+            return null;
+        } else if (MapUtils.isEmpty(replacementObjectMap) && MapUtils.isEmpty(replacementSubstringMap)) {
+            return dataSet;
+        } else {
+            return new ReplacementDataSet(dataSet, replacementObjectMap, replacementSubstringMap);
+        }
+    }
+
+    @Override
+    public void setReplacementObjectMap(Map<?, ?> replacementObjectMap) {
+        this.replacementObjectMap = replacementObjectMap;
+    }
+
+    @Override
+    public void setReplacementSubstringMap(Map<String, String> replacementSubstringMap) {
+        this.replacementSubstringMap = replacementSubstringMap;
     }
 
     @Override
     public void setFlatXmlDataSet(String testFile) {
-        try {
-            FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-            dataSet = builder.build(Files.newInputStream(TestUtils.findTestDataFile(tester, testFile)));
-        } catch (DataSetException | IOException e) {
-            throw new TestException(e);
-        }
+        dataSet = DataSetUtils.createFlatXmlDataSet(TestUtils.findTestDataFile(tester, testFile));
     }
 
     @Override
     public void setCsvDataSet(String testDirectory) {
-        try {
-            dataSet = new CachedDataSet(new CsvProducerEx(TestUtils.findTestDataFile(tester, testDirectory),
-                    StandardCharsets.UTF_8));
-        } catch (DataSetException e) {
-            throw new TestException(e);
-        }
+        dataSet = DataSetUtils.createCsvDataSet(TestUtils.findTestDataFile(tester, testDirectory));
     }
 
     @Override
