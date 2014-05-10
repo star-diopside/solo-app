@@ -30,7 +30,7 @@ public class LoginUser implements LoginUserDetails {
     public LoginUser(User user) {
         _userDetails = new org.springframework.security.core.userdetails.User(user.getUserId(), user.getPassword(),
                 user.getEnabled(), true, true, true, AuthorityUtils.NO_AUTHORITIES);
-        _user = new User(user);
+        _user = user.clone();
         _lastLoginAt = toZonedDateTime(user.getLastLoginAt());
         _logoutAt = toZonedDateTime(user.getLogoutAt());
     }
@@ -102,7 +102,7 @@ public class LoginUser implements LoginUserDetails {
 
     @Override
     public User convertUserEntity() {
-        return new User(_user);
+        return _user.clone();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class LoginUser implements LoginUserDetails {
         _userDetails = new org.springframework.security.core.userdetails.User(userDetails.getUsername(),
                 userDetails.getPassword(), userDetails.isEnabled(), userDetails.isAccountNonExpired(),
                 userDetails.isCredentialsNonExpired(), userDetails.isAccountNonLocked(), userDetails.getAuthorities());
-        _user = new User(user);
+        _user = user.clone();
         _lastLoginAt = toZonedDateTime(user.getLastLoginAt());
         _logoutAt = toZonedDateTime(user.getLogoutAt());
     }

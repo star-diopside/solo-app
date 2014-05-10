@@ -5,9 +5,11 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 import jp.gr.java_conf.star_diopside.solo.validation.constraints.NotBlank;
+import lombok.Data;
 
 import org.maru.m4hv.extensions.constraints.ActualDate;
 
+@Data
 @SuppressWarnings("serial")
 public class BA01S010Form implements Serializable {
 
@@ -24,57 +26,4 @@ public class BA01S010Form implements Serializable {
     /** 説明 */
     private String description;
 
-    /**
-     * ユーザ名を取得する。
-     * 
-     * @return ユーザ名
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * ユーザ名を設定する。
-     * 
-     * @param username ユーザ名
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * スケジュール日時を取得する。
-     * 
-     * @return スケジュール日時
-     */
-    public String getScheduledOn() {
-        return scheduledOn;
-    }
-
-    /**
-     * スケジュール日時を設定する。
-     * 
-     * @param scheduledOn スケジュール日時
-     */
-    public void setScheduledOn(String scheduledOn) {
-        this.scheduledOn = scheduledOn;
-    }
-
-    /**
-     * 説明を取得する。
-     * 
-     * @return 説明
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 説明を設定する。
-     * 
-     * @param description 説明
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

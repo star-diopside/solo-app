@@ -7,10 +7,14 @@ import javax.validation.constraints.Size;
 
 import jp.gr.java_conf.star_diopside.solo.validation.constraints.NotBlank;
 import jp.gr.java_conf.star_diopside.solo.validation.constraints.NotEmpty;
+import lombok.Data;
+import lombok.ToString;
 
 /**
  * AA02S010(ユーザ新規登録)画面フォーム
  */
+@Data
+@ToString(exclude = { "password", "passwordConfirm" })
 @SuppressWarnings("serial")
 public class AA02S010Form implements Serializable {
 
@@ -42,93 +46,4 @@ public class AA02S010Form implements Serializable {
     @NotEmpty(message = "{jp.gr.java_conf.star_diopside.solo.validation.Required.captcha.message}")
     private String captcha;
 
-    /**
-     * ユーザ名を取得する。
-     * 
-     * @return ユーザ名
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * ユーザ名を設定する。
-     * 
-     * @param username ユーザ名
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * ニックネームを取得する。
-     * 
-     * @return ニックネーム
-     */
-    public String getNickname() {
-        return nickname;
-    }
-
-    /**
-     * ニックネームを設定する。
-     * 
-     * @param nickname ニックネーム
-     */
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    /**
-     * パスワードを取得する。
-     * 
-     * @return パスワード
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * パスワードを設定する。
-     * 
-     * @param password パスワード
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * パスワード(確認)を取得する。
-     * 
-     * @return パスワード(確認)
-     */
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    /**
-     * パスワード(確認)を設定する。
-     * 
-     * @param passwordConfirm パスワード(確認)
-     */
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
-    /**
-     * キャプチャを取得する。
-     * 
-     * @return キャプチャ
-     */
-    public String getCaptcha() {
-        return captcha;
-    }
-
-    /**
-     * キャプチャを設定する。
-     * 
-     * @param captcha キャプチャ
-     */
-    public void setCaptcha(String captcha) {
-        this.captcha = captcha;
-    }
 }
