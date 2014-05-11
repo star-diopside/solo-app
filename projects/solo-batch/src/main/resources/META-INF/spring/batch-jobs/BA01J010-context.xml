@@ -9,7 +9,7 @@
 
     <job id="BA01J010" incrementer="jobParametersIncrementer" xmlns="http://www.springframework.org/schema/batch">
         <listeners>
-            <listener ref="BA01J010.listener" />
+            <listener ref="BA01J010.listener.temporaryFile" />
         </listeners>
         <step id="BA01J010S010" parent="simpleStep" next="BA01J010S020">
             <tasklet transaction-manager="transactionManager">
@@ -23,7 +23,7 @@
         </step>
     </job>
 
-    <bean id="BA01J010.listener" class="jp.gr.java_conf.star_diopside.solo.batch.support.TemporaryFileListener">
+    <bean id="BA01J010.listener.temporaryFile" class="jp.gr.java_conf.star_diopside.solo.batch.support.TemporaryFileJobListener">
         <property name="key" value="tempFile" />
     </bean>
 

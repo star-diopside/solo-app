@@ -26,6 +26,10 @@
             <artifactId>spring-batch-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
             <groupId>jp.gr.java_conf.star_diopside.solo</groupId>
             <artifactId>solo-test-support</artifactId>
             <scope>test</scope>
