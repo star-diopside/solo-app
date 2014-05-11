@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -46,7 +47,7 @@ public class BA01J010Test {
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     private DatabaseTestSupport databaseTestSupport;
-    private HashMap<Object, Object> replacementObjectMap;
+    private Map<Object, Object> replacementObjectMap;
 
     @Before
     public void before() {

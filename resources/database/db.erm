@@ -113,7 +113,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2011-10-09 14:07:29</creation_date>
-			<updated_date>2014-04-06 21:13:05</updated_date>
+			<updated_date>2014-05-11 19:05:54</updated_date>
 			<model_property>
 				<name>プロジェクト名</name>
 				<value></value>
@@ -232,8 +232,8 @@
 			<binary>false</binary>
 			<args></args>
 			<description></description>
-			<logical_name>仮登録フラグ</logical_name>
-			<physical_name>INTERIM_REGISTER</physical_name>
+			<logical_name>本登録フラグ</logical_name>
+			<physical_name>HIGH_GRADE_REGISTRY</physical_name>
 			<type>boolean</type>
 		</word>
 		<word>

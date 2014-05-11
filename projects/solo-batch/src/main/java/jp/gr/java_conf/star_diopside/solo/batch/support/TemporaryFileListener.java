@@ -6,15 +6,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import jp.gr.java_conf.star_diopside.solo.core.exception.SystemException;
-import lombok.Setter;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 
 public class TemporaryFileListener implements JobExecutionListener {
 
-    @Setter
     private String key;
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     @Override
     public void beforeJob(JobExecution jobExecution) {

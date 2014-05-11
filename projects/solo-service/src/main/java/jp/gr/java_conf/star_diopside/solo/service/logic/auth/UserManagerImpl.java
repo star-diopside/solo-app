@@ -57,7 +57,7 @@ public class UserManagerImpl implements UserManager {
         user.setPassword(passwordEncoder.encode(password));
         user.setPasswordUpdatedAt(current);
         user.setEnabled(true);
-        user.setInterimRegister(true);
+        user.setHighGradeRegistry(false);
         user.setLoginErrorCount(0);
         user.setLockoutAt(null);
         user.setLastLoginAt(null);
@@ -86,7 +86,7 @@ public class UserManagerImpl implements UserManager {
     public boolean checkValid(User user) {
 
         // ユーザの有効チェックを行う
-        if (Boolean.FALSE.equals(user.getInterimRegister())) {
+        if (Boolean.TRUE.equals(user.getHighGradeRegistry())) {
             // 本登録済みの場合、有効ユーザとする。
             return true;
         } else {

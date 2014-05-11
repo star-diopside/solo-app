@@ -45,9 +45,9 @@ public class User implements Serializable, Cloneable {
     /** 有効フラグ */
     private Boolean enabled;
 
-    /** 仮登録フラグ */
-    @Column(name = "interim_register")
-    private Boolean interimRegister;
+    /** 本登録フラグ */
+    @Column(name = "high_grade_registry")
+    private Boolean highGradeRegistry;
 
     /** ログインエラー回数 */
     @Column(name = "login_error_count")
